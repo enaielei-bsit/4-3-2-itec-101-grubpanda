@@ -15,6 +15,19 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div id="main-content" class="ui piled text container segment">
+        <%= render("partials/header") %>
+        <div class="ui grid">
+          <%= render("partials/navigation") %>
+          <div class="ui twelve wide stretched column">
+            <div id="right-content" class="ui segment">
+              <%= yield %>
+            </div>
+          </div>
+          <%= render("partials/footer") %>
+        </div>
+    </div>
+    
+    <%= javascript_include_tag("main", "data-turbo-track": "reload") %>
   </body>
 </html>

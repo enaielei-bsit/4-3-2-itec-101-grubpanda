@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   root("application#index")
+
+  get("/auth/sign-up", to: "users#new", as: :new_user)
+  post("/auth/sign-up", to: "users#create", as: :create_user)
 end

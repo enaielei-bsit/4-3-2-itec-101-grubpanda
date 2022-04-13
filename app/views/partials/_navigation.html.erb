@@ -1,0 +1,32 @@
+<%
+    # signed_in = controller.get_signed_in()
+    # admin = signed_in && signed_in.admin?
+    name = controller.action_name
+    navs = [
+        {
+            url: true ? "#" : nil ,
+            active: true,
+            text: "Auth",
+            icon: "green lock",
+            data: nil
+        }
+    ]
+%>
+<div id="navigation-parent" class="four wide column">
+    <nav id="navigation" class="ui fluid vertical pointing compact menu">
+        <% for nav in navs%>
+            <%
+                url = nav[:url]
+                active = nav[:active]
+                text = nav[:text]
+                icon = nav[:icon]
+                data = nav[:data]
+                icon = "<i class='icon #{icon}'></i>"
+                body = raw("#{icon}#{text}")
+            %>
+            <% if url %>
+                <%= link_to(body, url, data: data, class: ["item", ("active" if active)].join(" ")) %>
+            <% end %>
+        <% end %>
+    </nav>
+</div>

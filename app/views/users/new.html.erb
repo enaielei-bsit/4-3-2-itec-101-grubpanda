@@ -1,0 +1,107 @@
+<% provide(:title, "Sign Up") %>
+<%
+    signed_in = controller.signed_in(User)
+%>
+<%= render("partials/page_header", title: "Sign Up", subtitle: "New User? Setup an account in minutes!") %>
+<div class="ui divider"></div>
+<%= form_with(
+    model: @user,
+    id: "account-details-form",
+    class: "ui form",
+    url: create_user_path()
+) do |form| %>
+    <div class="field">
+        <%= form.label(:email) %>
+        <div class="ui left icon input">
+            <%= form.email_field(:email, placeholder: "juan.dela.cruz@email.com", value: @user.email) %>
+            <i class="at icon"></i>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="two fields">
+        <div class="field">
+            <%= form.label(:family_name, "Family Name") %>
+            <div class="ui left icon input">
+                <%= form.text_field(:family_name, placeholder: "Cruz", value: nil) %>
+                <i class="id badge icon"></i>
+            </div>
+        </div>
+        <div class="field">
+            <%= form.label(:given_name, "Given Name") %>
+            <%= form.text_field(:given_name, placeholder: "Juan", value: nil) %>
+        </div>
+        <div class="field">
+            <%= form.label(:middle_name, "Middle Name") %>
+            <%= form.text_field(:middle_name, placeholder: "Dela", value: nil) %>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="two fields">
+        <div class="field">
+            <%= form.label(:region) %>
+            <div id="region" class="ui selection dropdown">
+                <%= form.hidden_field(:region) %>
+                <i class="dropdown icon"></i>
+                <div class="default text">CALABARZON</div>
+                <div class="menu">
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <%= form.label(:province) %>
+            <div id="province" class="ui selection dropdown">
+                <%= form.hidden_field(:province) %>
+                <i class="dropdown icon"></i>
+                <div class="default text">Cavite</div>
+                <div class="menu">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <%= form.label(:city) %>
+            <div id="city" class="ui selection dropdown">
+                <%= form.hidden_field(:city) %>
+                <i class="dropdown icon"></i>
+                <div class="default text">Bacoor</div>
+                <div class="menu">
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <%= form.label(:barangay) %>
+            <%= form.text_field(:barangay, placeholder: "Molino III", value: nil) %>
+        </div>
+    </div>
+    <div class="field">
+        <%= form.label(:street) %>
+        <div class="ui left icon input">
+            <%= form.text_field(:street, placeholder: "Ginto St.", value: nil) %>
+            <i class="marker icon"></i>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="two fields">
+        <div class="field">
+            <%= form.label(:password) %>
+            <div class="ui left icon input">
+                <%= form.password_field(:password, placeholder: "@yourPassword1234") %>
+                <i class="key icon"></i>
+            </div>
+        </div>
+        <div class="field">
+            <%= form.label(:password_confirmation, "Password Confirmation") %>
+            <%= form.password_field(:password_confirmation, placeholder: "@yourPassword1234") %>
+        </div>
+    </div>
+    <div class="ui right aligned fitted basic segment">
+        <div class="ui buttons">
+            <%#= link_to("Sign In", new_session_path(), class: "ui button") %>
+            <%# <div class="or"></div> %>
+            <%= form.submit("Submit", class: "ui green button") %>
+        </div>
+    </div>
+    <%= render("partials/messages", messages: flash[:messages]) %>
+    <div class="ui error message form-error-message"></div>
+<% end %>
