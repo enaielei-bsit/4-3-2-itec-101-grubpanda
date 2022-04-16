@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+    include ActionView::Helpers::DateHelper
     include Utils::Controller
 
     $TITLE = "GrubPanda"
