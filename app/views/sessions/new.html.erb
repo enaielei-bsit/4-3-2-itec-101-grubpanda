@@ -1,0 +1,42 @@
+<% provide(:title, "Sign In") %>
+<%
+%>
+<%= render("partials/page_header", title: "Sign In", subtitle: "Already have an account? Log in to gain access to different features!") %>
+<div class="ui divider"></div>
+<%= form_with(
+    scope: :session,
+    id: "session-form",
+    class: "ui form",
+    url: create_session_path()
+) do |form| %>
+    <div class="field">
+        <%= form.label(:email) %>
+        <div class="ui left icon input">
+            <%= form.email_field(:email, placeholder: "juan.dela.cruz@email.com", value: @session[:email]) %>
+            <i class="at icon"></i>
+        </div>
+    </div>
+    <div class="field">
+        <%= form.label(:password) %>
+        <div class="ui left icon input">
+            <%= form.password_field(:password, placeholder: "@yourPassword1234") %>
+            <i class="key icon"></i>
+        </div>
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox" class="hidden">
+            <%= form.check_box(:remembered) %>
+            <%= form.label(:remembered, "Remember my session") %>
+        </div>
+    </div>
+    <div class="ui right aligned fitted basic segment">
+        <div class="ui buttons">
+            <%= link_to("Sign Up", new_user_path(), class: "ui button") %>
+            <div class="or"></div>
+            <%= form.submit("Submit", class: "ui green button") %>
+        </div>
+    </div>
+    <%= render("partials/messages", messages: flash[:messages]) %>
+    <div class="ui error message form-error-message"></div>
+<% end %>

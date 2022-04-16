@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
     before_action() do |controller|
-        # action = controller.action_name
-        # if ["new", "create"].include?(action) && get_signed_in()
-        #     redirect_to(root_url())
-        # end
+        action = controller.action_name
+        if ["new", "create"].include?(action) && @signed_in
+            redirect_to(root_url())
+        end
     end
 
     def new()
@@ -18,12 +18,11 @@ class UsersController < ApplicationController
                 flash,
                 "Successful Account Registration",
                 "You may now try signing in your account.",
-                "negative",
+                "positive",
             )
-            redirect_to(new_user_url())
-            # redirect_to(new_session_url(session: {
-            #     email: @user.email
-            # }))
+            redirect_to(new_session_url(session: {
+                email: @user.email
+            }))
         else
             Utils.add_messages(
                 flash.now,
@@ -43,6 +42,11 @@ class UsersController < ApplicationController
             :family_name,
             :given_name,
             :middle_name,
+            :region,
+            :province,
+            :city,
+            :barangay,
+            :street,
             :password,
             :password_confirmation
         )

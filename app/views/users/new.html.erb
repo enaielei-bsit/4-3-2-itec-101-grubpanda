@@ -1,12 +1,11 @@
 <% provide(:title, "Sign Up") %>
 <%
-    signed_in = controller.signed_in(User)
 %>
 <%= render("partials/page_header", title: "Sign Up", subtitle: "New User? Setup an account in minutes!") %>
 <div class="ui divider"></div>
 <%= form_with(
     model: @user,
-    id: "account-details-form",
+    id: "user-form",
     class: "ui form",
     url: create_user_path()
 ) do |form| %>
@@ -97,8 +96,8 @@
     </div>
     <div class="ui right aligned fitted basic segment">
         <div class="ui buttons">
-            <%#= link_to("Sign In", new_session_path(), class: "ui button") %>
-            <%# <div class="or"></div> %>
+            <%= link_to("Sign In", new_session_path(), class: "ui button") %>
+            <div class="or"></div>
             <%= form.submit("Submit", class: "ui green button") %>
         </div>
     </div>

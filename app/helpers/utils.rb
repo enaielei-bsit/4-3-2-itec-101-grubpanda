@@ -16,7 +16,7 @@ module Utils
                 session[:user_id] = nil
                 cookies.permanent.signed[:user_id] = nil
                 cookies.permanent[:request] = nil
-                user.update(session_digest: nil)
+                user&.update(session_digest: nil)
             end
         end
     
@@ -41,7 +41,7 @@ module Utils
         end
     
         def on_page(controller_name, *actions)
-            return Utils.is_page(self, controller_name, *actions)
+            return Utils.on_page(self, controller_name, *actions)
         end
     end
 

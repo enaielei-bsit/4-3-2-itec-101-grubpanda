@@ -10,6 +10,10 @@ $(() => {
 
     $(".ui.dropdown").dropdown();
 
+    $('.message .close').on('click', function() {
+        $(this).closest('.message').transition('fade');
+    });
+
     let regions = [];
     function getRegion() {
         let region = $("#region").dropdown("get value");
