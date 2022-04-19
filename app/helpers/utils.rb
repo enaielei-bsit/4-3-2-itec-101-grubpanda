@@ -1,9 +1,9 @@
 module Utils
     module Controller
         def sign_in(user, remembered=false)
-            if !remembered
-                session[:user_id] = user.id
-            else
+            session[:user_id] = user.id
+            
+            if remembered
                 cookies.permanent.signed[:user_id] = user.id
                 request = Utils.random()
                 cookies.permanent[:request] = request
