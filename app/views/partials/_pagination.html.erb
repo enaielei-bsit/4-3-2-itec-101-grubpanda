@@ -7,6 +7,7 @@
     <%
         page_param ||= :page
         page = page.clamp(page, pages)
+        size ||= "mini"
 
         options ||= {}
         html_options ||= {}
@@ -38,7 +39,7 @@
         end_ = ((page + upper_pages_display) + uo).clamp(1, pages)
     %>
     <% if pages != 0 %>
-        <nav class="ui pagination mini menu">
+        <nav class="ui pagination <%= size %> menu">
             <% if first_label %>
                 <%
                     cpage = 1

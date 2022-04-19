@@ -1,0 +1,167 @@
+<% provide(:title, "Menus") %>
+<%
+%>
+<%= render("partials/page_header", title: "Menus", subtitle: "Manage your menus.") %>
+<div class="ui divider"></div>
+<%= form_with(
+    scope: :menu,
+    id: "user-form",
+    class: "ui form",
+    url: create_menu_path()
+) do |form| %>
+    <div class="field">
+        <%= form.label(:kiosk_id, "Kiosk") %>
+        <div id="kiosk" class="ui selection dropdown">
+            <%= form.hidden_field(:kiosk_id) %>
+            <i class="dropdown icon"></i>
+            <div class="default text"></div>
+            <div class="menu">
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <%= form.label(:name, "Name") %>
+        <div class="ui left icon input">
+            <%= form.text_field(:name, placeholder: "JDC Product", value: nil) %>
+            <i class="tag icon"></i>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="field">
+        <%= form.label(:price) %>
+        <div class="ui left icon input">
+            <%= form.number_field(:price, value: 0, min: 0) %>
+            <i class="dollar sign icon"></i>
+        </div>
+    </div>
+    <%= form.hidden_field(:items) %>
+    <div id="menu-items-parent" class="field">
+        <div class="fields menu-item">
+            <div class="eight wide field menu-item-product">
+                <%= label_tag(:product_id, "Food and Beverage") %>
+                <div id="product" class="ui selection dropdown">
+                    <%= hidden_field_tag(:product_id) %>
+                    <i class="dropdown icon"></i>
+                    <div class="default text"></div>
+                    <div class="menu">
+                    </div>
+                </div>
+            </div>
+            <div class="five wide field menu-item-quantity">
+                <%= label_tag(:quantity) %>
+                <%= number_field_tag(:quantity, 1, min: 1) %>
+            </div>
+            <div class="field menu-item-controls">
+                <label>&nbsp</label>
+                <div class="ui mini stackable basic buttons">
+                    <button class="ui compact icon button move-up" title="Move up" type="button">
+                        <i class="caret up icon"></i>
+                    </button>
+                    <button class="ui compact icon button move-down" title="Move down" type="button">
+                        <i class="caret down icon"></i>
+                    </button>
+                    <button class="ui compact icon button remove" title="Remove" type="button">
+                        <i class="trash alternate icon"></i>
+                    </button>
+                    <button class="ui compact icon button add" title="Add" type="button">
+                        <i class="plus icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="field">
+        <%= form.label(:description) %>
+        <%= form.text_area(:description, placeholder: "...", rows: 3, value: nil) %>
+    </div>
+    <div class="ui right aligned fitted basic segment">
+        <%= form.submit("Register", class: "ui green button") %>
+    </div>
+    <%= render("partials/messages", messages: flash[:messages]) %>
+    <div class="ui error message form-error-message"></div>
+<% end %>
+
+<div class="ui divider"></div>
+<%= hidden_field_tag(:selected, "") %>
+<table class="ui selectable celled mini table">
+    <thead>
+        <tr>
+            <th colspan="4" class="right aligned">
+                <button class="ui tiny compact button select" data-select-type="all" title="Select all" type="button">
+                    All
+                </button>
+                <button class="ui tiny compact button select" data-select-type="none" title="Deselect all" type="button">
+                    None
+                </button>
+                <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection" type="button">
+                    Invert
+                </button>
+                <a href="#" class="ui tiny compact icon button" title="View selected">
+                    <i class="eye icon"></i>
+                </a>
+                <a href="#" class="ui tiny compact icon button" title="Edit selected">
+                    <i class="edit icon"></i>
+                </a>
+                <a href="#" class="ui tiny compact icon button" title="Delete selected">
+                    <i class="trash alternate icon"></i>
+                </a>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <div class="ui fitted checkbox">
+                    <input class="selector main" type="checkbox"><label></label>
+                </div>
+            </th>
+            <th>Name</th>
+            <th>Items</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="collapsing">
+                <div class="ui fitted checkbox">
+                    <input class="selector" value="1" type="checkbox"><label></label>
+                </div>
+            </td>
+            <td>
+                <h6 class="ui image header">
+                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                    <div class="content">
+                        <%= link_to("Menu 1", "#") %>
+                    </div>
+                    </div>
+                </h6>
+            </td>
+            <td>...</td>
+            <td>...</td>
+        </tr>
+        <tr>
+            <td class="collapsing">
+                <div class="ui fitted checkbox">
+                    <input class="selector" value="2" type="checkbox"><label></label>
+                </div>
+            </td>
+            <td>
+                <h6 class="ui image header">
+                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                    <div class="content">
+                        <%= link_to("Menu 2", "#") %>
+                    </div>
+                    </div>
+                </h6>
+            </td>
+            <td>...</td>
+            <td>...</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="4" class="center aligned">
+                <%= render("partials/pagination", page: 1, pages: 5, size: "mini") %>
+            </th>
+        </tr>
+    </tfoot>
+</table>

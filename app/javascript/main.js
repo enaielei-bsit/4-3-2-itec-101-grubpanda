@@ -1,4 +1,4 @@
-$(() => {
+$(function() {
     const parenRegex = /\(([^)]+)\)/;
 
     $.fn.api.settings.api = {
@@ -197,4 +197,150 @@ $(() => {
     //         // toggleBookingSeat();
     //     }
     // });
-})
+
+    $(".image-upload").on("change", (ev) => {
+        let files = ev.currentTarget.files;
+        if(files.length > 0) {
+            $("#image-previews-parent").removeAttr("style");
+            $("#image-previews .image-preview").remove();
+            for(file of files) {
+                img = $("#image-preview").clone().appendTo("#image-previews");
+                id = img.attr("id");
+                img.removeAttr("id");
+                img.addClass(id);
+                img.removeAttr("style");
+                img.children("img").attr("src", URL.createObjectURL(file));
+            }
+        } else {
+            $("#image-previews-parent").css("display", "none");
+        }
+    });
+
+    function select(type="all") {
+        if(type == "all") {
+            $(".selector.main").prop("checked", true);
+            $(".selector[type=checkbox]").each((i, e) => {
+                if(!$(e).hasClass("main") && !e.checked) {
+                    e.checked = true;
+                    $(e).trigger("change");
+                }
+            });
+        } else if(type == "none") {
+            $(".selector.main").prop("checked", false);
+            $(".selector[type=checkbox]").each((i, e) => {
+                if(!$(e).hasClass("main") && e.checked) {
+                    e.checked = false;
+                    $(e).trigger("change");
+                }
+            });
+        } else if(type == "inverse") {
+            $(".selector.main").prop("checked", false);
+            $(".selector[type=checkbox]").each((i, e) => {
+                if(!$(e).hasClass("main")) {
+                    e.checked = !e.checked;
+                    $(e).trigger("change");
+                }
+            });
+        }
+    }
+
+    function updateSelected() {
+        let selected = [];
+        $(".selector[type=checkbox]").each((i, e) => {
+            if(!$(e).hasClass("main") && e.checked) {
+                selected.push(e.value);
+            }
+        });
+        $("#selected").attr("value", selected.join(","));
+    }
+
+    $(".selector[type=checkbox]").on("change", function() {
+        if($(this).hasClass("main")) {
+            let value = $(this).attr("value");
+            if(this.checked) select("all");
+            else select("none");
+        } else updateSelected();
+    });
+
+    $(".select").on("click", function() {
+        let type = $(this).data("select-type");
+        select(type);
+    });
+
+    let menuItemCount = 0;
+
+    function updateMenuItems() {
+        let val = $(".menu-item-quantity input").toArray()
+            .map((e) => e.value).join(",");
+        $("#menu_items").val(val);
+    }
+
+    function setupMenuItems() {
+        let i = 0;
+        for(let item of $(".menu-item")) {
+            let qty = "quantity-" + i;
+            let pro = "product-" + i;
+
+            $(item).find(".menu-item-quantity label").attr("for", qty);
+            $(item).find(".menu-item-quantity input")
+                .attr("id", qty).removeAttr("name")
+                .off("input")
+                .on("input", updateMenuItems);
+
+            // TODO: Set also the dropdown product.
+
+            $(item).find(".button.add").off("click");
+            $(item).find(".button.add").on("click", function() {
+                let item = $(this).closest(".menu-item");
+                let clone = item.clone()
+                clone.insertAfter(item);
+                clone.find(".menu-item-quantity input").val(1);
+                setupMenuItems();
+            });
+            
+            let rm = $(item).find(".button.remove");
+            rm.off("click");
+            rm.addClass("disabled");
+            if($(item).siblings().length != 0) {
+                rm.removeClass("disabled");
+                $(item).find(".button.remove").on("click", function() {
+                    let item = $(this).closest(".menu-item");
+                    item.remove();
+                    setupMenuItems();
+                });
+            }
+            
+            let up = $(item).find(".button.move-up");
+            up.off("click");
+            up.addClass("disabled");
+            if($(item).prev().length != 0) {
+                up.removeClass("disabled");
+                up.on("click", function() {
+                    let item = $(this).closest(".menu-item");
+                    let target = item.prev();
+                    $(item).hide().insertBefore(target).show("fast");
+                    setupMenuItems();
+                });
+            }
+
+            let dn = $(item).find(".button.move-down");
+            dn.off("click");
+            dn.addClass("disabled");
+            if($(item).next().length != 0) {
+                dn.removeClass("disabled");
+                dn.on("click", function() {
+                    let item = $(this).closest(".menu-item");
+                    let target = item.next();
+                    $(item).hide().insertAfter(target).show("fast");
+                    setupMenuItems();
+                });
+            }
+
+            i++;
+        }
+
+        menuItemCount = i;
+    }
+
+    setupMenuItems();
+});

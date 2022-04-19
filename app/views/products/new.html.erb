@@ -1,0 +1,125 @@
+<% provide(:title, "Foods and Beverages") %>
+<%
+%>
+<%= render("partials/page_header", title: "Foods and Beverages", subtitle: "Manage your foods and beverages.") %>
+<div class="ui divider"></div>
+<%= form_with(
+    scope: :product,
+    id: "user-form",
+    class: "ui form",
+    url: create_product_path()
+) do |form| %>
+    <div class="field">
+        <%= form.label(:name, "Name") %>
+        <div class="ui left icon input">
+            <%= form.text_field(:name, placeholder: "JDC Product", value: nil) %>
+            <i class="tag icon"></i>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="field">
+        <%= form.label(:serving_size, "Serving Size") %>
+        <div class="ui left icon input">
+            <%= form.text_field(:serving_size, placeholder: "8 slices", value: nil) %>
+            <i class="concierge bell icon"></i>
+        </div>
+    </div>
+    <div class="field">
+        <%= form.label(:description) %>
+        <%= form.text_area(:description, placeholder: "...", rows: 3, value: nil) %>
+    </div>
+    <div class="field">
+        <%= form.label(:images) %>
+        <%= form.file_field(:images, multiple: true, class: "image-upload", accept: $VALID_IMAGE_UPLOAD) %>
+    </div>
+    <%= render("partials/image_preview") %>
+    <div class="ui right aligned fitted basic segment">
+        <%= form.submit("Register", class: "ui green button") %>
+    </div>
+    <%= render("partials/messages", messages: flash[:messages]) %>
+    <div class="ui error message form-error-message"></div>
+<% end %>
+
+<div class="ui divider"></div>
+<%= hidden_field_tag(:selected, "") %>
+<table class="ui selectable celled mini table">
+    <thead>
+        <tr>
+            <th colspan="4" class="right aligned">
+                <button class="ui tiny compact button select" data-select-type="all" title="Select all">
+                    All
+                </button>
+                <button class="ui tiny compact button select" data-select-type="none" title="Deselect all">
+                    None
+                </button>
+                <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection">
+                    Invert
+                </button>
+                <a href="#" class="ui tiny compact icon button" title="View selected">
+                    <i class="eye icon"></i>
+                </a>
+                <a href="#" class="ui tiny compact icon button" title="Edit selected">
+                    <i class="edit icon"></i>
+                </a>
+                <a href="#" class="ui tiny compact icon button" title="Delete selected">
+                    <i class="trash alternate icon"></i>
+                </a>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <div class="ui fitted checkbox">
+                    <input class="selector main" type="checkbox"><label></label>
+                </div>
+            </th>
+            <th>Name</th>
+            <th>Serving Size</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="collapsing">
+                <div class="ui fitted checkbox">
+                    <input class="selector" value="1" type="checkbox"><label></label>
+                </div>
+            </td>
+            <td>
+                <h6 class="ui image header">
+                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                    <div class="content">
+                        <%= link_to("Food 1", "#") %>
+                    </div>
+                    </div>
+                </h6>
+            </td>
+            <td>...</td>
+            <td>...</td>
+        </tr>
+        <tr>
+            <td class="collapsing">
+                <div class="ui fitted checkbox">
+                    <input class="selector" value="2" type="checkbox"><label></label>
+                </div>
+            </td>
+            <td>
+                <h6 class="ui image header">
+                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                    <div class="content">
+                        <%= link_to("Food 2", "#") %>
+                    </div>
+                    </div>
+                </h6>
+            </td>
+            <td>...</td>
+            <td>...</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="4" class="center aligned">
+                <%= render("partials/pagination", page: 1, pages: 5, size: "mini") %>
+            </th>
+        </tr>
+    </tfoot>
+</table>

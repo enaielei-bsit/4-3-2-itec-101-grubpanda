@@ -1,5 +1,4 @@
 <%
-    name = controller.action_name
     navs = [
         {
             url: !@signed_in ? new_session_path() : nil,
@@ -7,6 +6,27 @@
                 controller.on_page("users", "new", "create"),
             text: "Auth",
             icon: "green lock",
+            data: nil
+        },
+        {
+            url: @signed_in && @permissions.include?(Permission::CLIENT) ? create_kiosk_path() : nil,
+            active: controller.on_page("kiosks", "new", "create", "destroy"),
+            text: "Kiosks",
+            icon: "green store",
+            data: nil
+        },
+        {
+            url: @signed_in && @permissions.include?(Permission::CLIENT) ? create_product_path() : nil,
+            active: controller.on_page("products", "new", "create", "destroy"),
+            text: "Foods & Beverages",
+            icon: "green utensils",
+            data: nil
+        },
+        {
+            url: @signed_in && @permissions.include?(Permission::CLIENT) ? create_menu_path() : nil,
+            active: controller.on_page("menus", "new", "create", "destroy"),
+            text: "Menus",
+            icon: "green clipboard list",
             data: nil
         },
         {
@@ -18,7 +38,7 @@
                 turbo_method: :delete,
                 turbo_confirm: "Are you sure you want to sign out?",
             }
-        }
+        },
     ]
 %>
 <div id="navigation-parent" class="four wide column">

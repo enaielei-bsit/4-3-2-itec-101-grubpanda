@@ -5,6 +5,8 @@ class User < ApplicationRecord
         self.email = self.email&.downcase()
     end
 
+    has_many(:permissions)
+
     validates(
         :email,
         uniqueness: true,

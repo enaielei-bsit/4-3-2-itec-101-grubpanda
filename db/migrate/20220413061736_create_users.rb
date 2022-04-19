@@ -13,8 +13,6 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string(:barangay)
       t.string(:street)
 
-      t.boolean(:admin)
-
       t.string(:password_digest)
       t.string(:session_digest)
 
