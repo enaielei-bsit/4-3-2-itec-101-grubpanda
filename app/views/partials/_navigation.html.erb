@@ -9,10 +9,17 @@
             data: nil
         },
         {
-            url: @signed_in && @permissions.include?(Permission::CLIENT) ? create_kiosk_path() : nil,
-            active: controller.on_page("kiosks", "new", "create", "destroy"),
+            url: @signed_in && (@client || @customer) ? create_kiosk_path() : nil,
+            active: controller.on_page("kiosks", "show", "new", "create", "destroy"),
             text: "Kiosks",
             icon: "green store",
+            data: nil
+        },
+        {
+            url: @signed_in && @customer ? edit_cart_path() : nil,
+            active: controller.on_page("purchases", "edit", "update"),
+            text: "Cart",
+            icon: "green cart",
             data: nil
         },
         {

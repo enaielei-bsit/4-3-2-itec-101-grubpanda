@@ -1,0 +1,107 @@
+<% provide(:title, "Cart") %>
+<%
+%>
+<%= render("partials/page_header", title: "Cart", subtitle: "Manage your purchases.") %>
+<div class="ui divider"></div>
+
+<%= form_with(
+    scope: :purchase,
+    id: "purchase-form",
+    class: "ui form",
+    url: update_cart_path()
+) do |form| %>
+    <%= hidden_field_tag(:selected, "") %>
+    <table class="ui very basic selectable celled mini table">
+        <thead>
+            <tr>
+                <th colspan="5" class="right aligned">
+                    <button class="ui tiny compact button select" data-select-type="all" title="Select all" type="button">
+                        All
+                    </button>
+                    <button class="ui tiny compact button select" data-select-type="none" title="Deselect all" type="button">
+                        None
+                    </button>
+                    <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection" type="button">
+                        Invert
+                    </button>
+                    <% if false %>
+                        <a href="#" class="ui tiny compact icon button" title="View selected">
+                            <i class="eye icon"></i>
+                        </a>
+                        <a href="#" class="ui tiny compact icon button" title="Edit selected">
+                            <i class="edit icon"></i>
+                        </a>
+                    <% end %>
+                    <a href="#" class="ui tiny compact icon button" title="Delete selected">
+                        <i class="trash alternate icon"></i>
+                    </a>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <div class="ui fitted checkbox">
+                        <input class="selector main" type="checkbox"><label></label>
+                    </div>
+                </th>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for i in 1..10 %>
+            <%
+                name = "Item #{i}"
+            %>
+                <tr>
+                    <td class="collapsing">
+                        <div class="ui fitted checkbox">
+                            <input class="selector" value="1" type="checkbox"><label></label>
+                        </div>
+                    </td>
+                    <td>
+                        <h6 class="ui image header">
+                            <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                            <div class="content">
+                                <%= link_to(name, show_kiosk_path(i)) %>
+                            </div>
+                            </div>
+                        </h6>
+                    </td>
+                    <td class="collapsing">₱99,999.00</td>
+                    <td class="collapsing">999</td>
+                    <td class="collapsing">₱99,999.00</td>
+                </tr>
+            <% end %>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="5" class="center aligned">
+                    <%= render("partials/pagination", page: 1, pages: 3, size: "mini") %>
+                </th>
+            </tr>
+            <tr>
+                <td colspan="4" class="right aligned">
+                    <h3 class="ui header">Grand Total</h3>
+                </td>
+                <td>
+                    <h3 class="ui header">₱99,999.00</h3>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    
+    <div class="ui right aligned fitted basic segment">
+        <div class="ui buttons">
+            <%= link_to("Cancel", destroy_cart_path(), class: "ui button", data: {
+                turbo_method: :delete,
+                turbo_confirm: "Are you sure you want to cancel your purchases?",
+            }) %>
+            <div class="or"></div>
+            <%= form.submit("Checkout", class: "ui green button") %>
+        </div>
+    </div>
+    <%= render("partials/messages", messages: flash[:messages]) %>
+    <div class="ui error message form-error-message"></div>
+<% end %>

@@ -6,6 +6,11 @@ class KiosksController < ApplicationController
         end
     end
 
+    def show()
+        @kiosk = params[:id]
+        @name = "Store #{@kiosk}"
+    end
+
     def new()
         @kiosk = {}
     end

@@ -9,9 +9,16 @@ class ApplicationController < ActionController::Base
 
     before_action() do |controller|
         @permissions = [
-            Permission::CLIENT
+            Permission::CLIENT,
+            Permission::CUSTOMER
         ]
         @signed_in ||= signed_in(User)
+
+        
+        per = Permission
+        pers = @permissions
+        @client = pers.include?(per::CLIENT)
+        @customer = pers.include?(per::CUSTOMER)
 
         action = controller.action_name
         if ["index"].include?(action) && !@signed_in

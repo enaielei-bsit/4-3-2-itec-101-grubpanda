@@ -1,0 +1,118 @@
+<% provide(:title, "Kiosks | #{@name}") %>
+<%
+%>
+<h2 class="ui center aligned header">
+    <div class="content">
+        <%= @name %>
+        <div class="sub header" title="Full Address">City, Province</div>
+    </div>
+</h2>
+
+<h3 class="ui header">
+  Details
+</h3>
+<div class="ui basic fitted segment">
+    <div class="ui list">
+        <div class="item">
+            <div class="header">Address</div>
+            Street, Barangay, City, Province
+        </div>
+    </div>
+    <div class="ui very relaxed horizontal list">
+        <div class="item">
+            <div class="header">Email</div>
+            store@email.com
+        </div>
+        <div class="item">
+            <div class="header">Mobile Number</div>
+            0998-765-4321
+        </div>
+    </div>
+    <div class="ui list">
+        <div class="item">
+            <div class="header">Description</div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar dictum rutrum. Nulla pellentesque faucibus leo, quis imperdiet neque venenatis a.
+        </div>
+    </div>
+</div>
+
+<h3 class="ui header">
+  Images
+</h3>
+<div id="image-previews-parent" class="ui basic fitted segment">
+    <div class="image-previews">
+        <% for i in 1..5 %>
+            <div class="image-preview">
+                <img src="https://via.placeholder.com/100x100.png">
+            </div>
+        <% end %>
+    </div>
+</div>
+
+
+<h3 class="ui header">
+  Menus
+</h3>
+<div class="ui basic fitted segment">
+    <%= hidden_field_tag(:selected, "") %>
+    <table class="ui selectable celled mini table">
+        <thead>
+            <tr>
+                <th colspan="4" class="right aligned">
+                    <button class="ui tiny compact button select" data-select-type="all" title="Select all" type="button">
+                        All
+                    </button>
+                    <button class="ui tiny compact button select" data-select-type="none" title="Deselect all" type="button">
+                        None
+                    </button>
+                    <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection" type="button">
+                        Invert
+                    </button>
+                    <%= number_field_tag(:quantity, 1, min: 1, max: 999, style: "width: 4em", title: "Quantity") %>
+                    <a href="#" class="ui tiny compact icon button" title="Add selected to Cart">
+                        <i class="cart plus icon"></i>
+                    </a>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <div class="ui fitted checkbox">
+                        <input class="selector main" type="checkbox"><label></label>
+                    </div>
+                </th>
+                <th>Name</th>
+                <th>Items</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for i in 1..10 %>
+                <tr>
+                    <td class="collapsing">
+                        <div class="ui fitted checkbox">
+                            <input class="selector" value="1" type="checkbox"><label></label>
+                        </div>
+                    </td>
+                    <td>
+                        <h6 class="ui image header">
+                            <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                            <div class="content">
+                                <%= link_to("Menu #{i}", "#") %>
+                            </div>
+                            </div>
+                        </h6>
+                    </td>
+                    <td>...</td>
+                    <td>...</td>
+                </tr>
+            <% end %>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="center aligned">
+                    <%= render("partials/pagination", page: 1, pages: 5, size: "mini") %>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>

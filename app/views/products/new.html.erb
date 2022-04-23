@@ -55,12 +55,14 @@
                 <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection">
                     Invert
                 </button>
-                <a href="#" class="ui tiny compact icon button" title="View selected">
-                    <i class="eye icon"></i>
-                </a>
-                <a href="#" class="ui tiny compact icon button" title="Edit selected">
-                    <i class="edit icon"></i>
-                </a>
+                <% if false %>
+                    <a href="#" class="ui tiny compact icon button" title="View selected">
+                        <i class="eye icon"></i>
+                    </a>
+                    <a href="#" class="ui tiny compact icon button" title="Edit selected">
+                        <i class="edit icon"></i>
+                    </a>
+                <% end %>
                 <a href="#" class="ui tiny compact icon button" title="Delete selected">
                     <i class="trash alternate icon"></i>
                 </a>
@@ -78,42 +80,26 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td class="collapsing">
-                <div class="ui fitted checkbox">
-                    <input class="selector" value="1" type="checkbox"><label></label>
-                </div>
-            </td>
-            <td>
-                <h6 class="ui image header">
-                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
-                    <div class="content">
-                        <%= link_to("Food 1", "#") %>
+        <% for i in 1..10 %>
+            <tr>
+                <td class="collapsing">
+                    <div class="ui fitted checkbox">
+                        <input class="selector" value="1" type="checkbox"><label></label>
                     </div>
-                    </div>
-                </h6>
-            </td>
-            <td>...</td>
-            <td>...</td>
-        </tr>
-        <tr>
-            <td class="collapsing">
-                <div class="ui fitted checkbox">
-                    <input class="selector" value="2" type="checkbox"><label></label>
-                </div>
-            </td>
-            <td>
-                <h6 class="ui image header">
-                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
-                    <div class="content">
-                        <%= link_to("Food 2", "#") %>
-                    </div>
-                    </div>
-                </h6>
-            </td>
-            <td>...</td>
-            <td>...</td>
-        </tr>
+                </td>
+                <td>
+                    <h6 class="ui image header">
+                        <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                        <div class="content">
+                            <%= link_to("Food 1", "#") %>
+                        </div>
+                        </div>
+                    </h6>
+                </td>
+                <td>...</td>
+                <td>...</td>
+            </tr>
+        <% end %>
     </tbody>
     <tfoot>
         <tr>

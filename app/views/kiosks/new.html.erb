@@ -1,172 +1,177 @@
 <% provide(:title, "Kiosks") %>
 <%
+    if @customer && @client
+        subtitle = "Manage your kiosks and view the other available kiosks."
+    elsif @client
+        subtitle = "Manage your kiosks."
+    elsif @customer
+        subtitle = "The available kiosks in your area."
+    end
 %>
-<%= render("partials/page_header", title: "Kiosks", subtitle: "Manage your kiosks.") %>
+<%= render("partials/page_header", title: "Kiosks", subtitle: subtitle) %>
 <div class="ui divider"></div>
-<%= form_with(
-    scope: :kiosk,
-    id: "user-form",
-    class: "ui form",
-    url: create_kiosk_path()
-) do |form| %>
-    <div class="field">
-        <%= form.label(:name, "Name") %>
-        <div class="ui left icon input">
-            <%= form.text_field(:name, placeholder: "JDC Kiosk", value: nil) %>
-            <i class="tag icon"></i>
-        </div>
-    </div>
-    <div class="ui divider"></div>
-    <div class="two fields">
+<% if @client %>
+    <%= form_with(
+        scope: :kiosk,
+        id: "user-form",
+        class: "ui form",
+        url: create_kiosk_path()
+    ) do |form| %>
         <div class="field">
-            <%= form.label(:email) %>
+            <%= form.label(:name, "Name") %>
             <div class="ui left icon input">
-                <%= form.email_field(:email, placeholder: "juan.dela.cruz@email.com") %>
-                <i class="at icon"></i>
+                <%= form.text_field(:name, placeholder: "JDC Kiosk", value: nil) %>
+                <i class="tag icon"></i>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="two fields">
+            <div class="field">
+                <%= form.label(:email) %>
+                <div class="ui left icon input">
+                    <%= form.email_field(:email, placeholder: "juan.dela.cruz@email.com") %>
+                    <i class="at icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <%= form.label(:mobile_number, "Mobile Number") %>
+                <%= form.text_field(:mobile_number, placeholder: "09987654321", value: nil) %>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="two fields">
+            <div class="field">
+                <%= form.label(:region) %>
+                <div id="region" class="ui selection dropdown">
+                    <%= form.hidden_field(:region) %>
+                    <i class="dropdown icon"></i>
+                    <div class="default text">CALABARZON</div>
+                    <div class="menu">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <%= form.label(:province) %>
+                <div id="province" class="ui selection dropdown">
+                    <%= form.hidden_field(:province) %>
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Cavite</div>
+                    <div class="menu">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <%= form.label(:city) %>
+                <div id="city" class="ui selection dropdown">
+                    <%= form.hidden_field(:city) %>
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Bacoor</div>
+                    <div class="menu">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <%= form.label(:barangay) %>
+                <%= form.text_field(:barangay, placeholder: "Molino III", value: nil) %>
             </div>
         </div>
         <div class="field">
-            <%= form.label(:mobile_number, "Mobile Number") %>
-            <%= form.text_field(:mobile_number, placeholder: "09987654321", value: nil) %>
+            <%= form.label(:street) %>
+            <div class="ui left icon input">
+                <%= form.text_field(:street, placeholder: "Ginto St.", value: nil) %>
+                <i class="marker icon"></i>
+            </div>
         </div>
-    </div>
+        <div class="ui divider"></div>
+        <div class="field">
+            <%= form.label(:description) %>
+            <%= form.text_area(:description, placeholder: "...", rows: 3, value: nil) %>
+        </div>
+        <div class="field">
+            <%= form.label(:images) %>
+            <%= form.file_field(:images, multiple: true, class: "image-upload", accept: $VALID_IMAGE_UPLOAD) %>
+        </div>
+        <%= render("partials/image_preview") %>
+        <div class="ui right aligned fitted basic segment">
+            <%= form.submit("Register", class: "ui green button") %>
+        </div>
+        <%= render("partials/messages", messages: flash[:messages]) %>
+        <div class="ui error message form-error-message"></div>
+    <% end %>
+
     <div class="ui divider"></div>
-    <div class="two fields">
-        <div class="field">
-            <%= form.label(:region) %>
-            <div id="region" class="ui selection dropdown">
-                <%= form.hidden_field(:region) %>
-                <i class="dropdown icon"></i>
-                <div class="default text">CALABARZON</div>
-                <div class="menu">
-                </div>
-            </div>
-        </div>
-        <div class="field">
-            <%= form.label(:province) %>
-            <div id="province" class="ui selection dropdown">
-                <%= form.hidden_field(:province) %>
-                <i class="dropdown icon"></i>
-                <div class="default text">Cavite</div>
-                <div class="menu">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="two fields">
-        <div class="field">
-            <%= form.label(:city) %>
-            <div id="city" class="ui selection dropdown">
-                <%= form.hidden_field(:city) %>
-                <i class="dropdown icon"></i>
-                <div class="default text">Bacoor</div>
-                <div class="menu">
-                </div>
-            </div>
-        </div>
-        <div class="field">
-            <%= form.label(:barangay) %>
-            <%= form.text_field(:barangay, placeholder: "Molino III", value: nil) %>
-        </div>
-    </div>
-    <div class="field">
-        <%= form.label(:street) %>
-        <div class="ui left icon input">
-            <%= form.text_field(:street, placeholder: "Ginto St.", value: nil) %>
-            <i class="marker icon"></i>
-        </div>
-    </div>
-    <div class="ui divider"></div>
-    <div class="field">
-        <%= form.label(:description) %>
-        <%= form.text_area(:description, placeholder: "...", rows: 3, value: nil) %>
-    </div>
-    <div class="field">
-        <%= form.label(:images) %>
-        <%= form.file_field(:images, multiple: true, class: "image-upload", accept: $VALID_IMAGE_UPLOAD) %>
-    </div>
-    <%= render("partials/image_preview") %>
-    <div class="ui right aligned fitted basic segment">
-        <%= form.submit("Register", class: "ui green button") %>
-    </div>
-    <%= render("partials/messages", messages: flash[:messages]) %>
-    <div class="ui error message form-error-message"></div>
 <% end %>
 
-<div class="ui divider"></div>
 <%= hidden_field_tag(:selected, "") %>
 <table class="ui selectable celled mini table">
     <thead>
+        <% if @client %>
+            <tr>
+                <th colspan="4" class="right aligned">
+                    <button class="ui tiny compact button select" data-select-type="all" title="Select all" type="button">
+                        All
+                    </button>
+                    <button class="ui tiny compact button select" data-select-type="none" title="Deselect all" type="button">
+                        None
+                    </button>
+                    <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection" type="button">
+                        Invert
+                    </button>
+                    <% if false %>
+                        <a href="#" class="ui tiny compact icon button" title="View selected">
+                            <i class="eye icon"></i>
+                        </a>
+                        <a href="#" class="ui tiny compact icon button" title="Edit selected">
+                            <i class="edit icon"></i>
+                        </a>
+                    <% end %>
+                    <a href="#" class="ui tiny compact icon button" title="Delete selected">
+                        <i class="trash alternate icon"></i>
+                    </a>
+                </th>
+            </tr>
+        <% end %>
         <tr>
-            <th colspan="4" class="right aligned">
-                <button class="ui tiny compact button select" data-select-type="all" title="Select all" type="button">
-                    All
-                </button>
-                <button class="ui tiny compact button select" data-select-type="none" title="Deselect all" type="button">
-                    None
-                </button>
-                <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection" type="button">
-                    Invert
-                </button>
-                <a href="#" class="ui tiny compact icon button" title="View selected">
-                    <i class="eye icon"></i>
-                </a>
-                <a href="#" class="ui tiny compact icon button" title="Edit selected">
-                    <i class="edit icon"></i>
-                </a>
-                <a href="#" class="ui tiny compact icon button" title="Delete selected">
-                    <i class="trash alternate icon"></i>
-                </a>
-            </th>
-        </tr>
-        <tr>
-            <th>
-                <div class="ui fitted checkbox">
-                    <input class="selector main" type="checkbox"><label></label>
-                </div>
-            </th>
+            <% if @client %>
+                <th>
+                    <div class="ui fitted checkbox">
+                        <input class="selector main" type="checkbox"><label></label>
+                    </div>
+                </th>
+            <% end %>
             <th>Name</th>
             <th>Location</th>
             <th>Description</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td class="collapsing">
-                <div class="ui fitted checkbox">
-                    <input class="selector" value="1" type="checkbox"><label></label>
-                </div>
-            </td>
-            <td>
-                <h6 class="ui image header">
-                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
-                    <div class="content">
-                        <%= link_to("Store 1", "#") %>
-                    </div>
-                    </div>
-                </h6>
-            </td>
-            <td>...</td>
-            <td>...</td>
-        </tr>
-        <tr>
-            <td class="collapsing">
-                <div class="ui fitted checkbox">
-                    <input class="selector" value="2" type="checkbox"><label></label>
-                </div>
-            </td>
-            <td>
-                <h6 class="ui image header">
-                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
-                    <div class="content">
-                        <%= link_to("Store 2", "#") %>
-                    </div>
-                    </div>
-                </h6>
-            </td>
-            <td>...</td>
-            <td>...</td>
-        </tr>
+        <% for i in 1..10 %>
+        <%
+            name = "Store #{i}"
+        %>
+            <tr>
+                <% if @client %>
+                    <td class="collapsing">
+                        <div class="ui fitted checkbox">
+                            <input class="selector" value="1" type="checkbox"><label></label>
+                        </div>
+                    </td>
+                <% end %>
+                <td>
+                    <h6 class="ui image header">
+                        <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                        <div class="content">
+                            <%= link_to(name, show_kiosk_path(i)) %>
+                        </div>
+                        </div>
+                    </h6>
+                </td>
+                <td>...</td>
+                <td>...</td>
+            </tr>
+        <% end %>
     </tbody>
     <tfoot>
         <tr>

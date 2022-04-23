@@ -16,9 +16,15 @@ Rails.application.routes.draw do
   delete("/auth/sign-out", to: "sessions#destroy", as: :destroy_session)
 
   # Kiosks
+  get("/kiosks/:id", to: "kiosks#show", as: :show_kiosk)
   get("/kiosks", to: "kiosks#new", as: :new_kiosk)
   post("/kiosks", to: "kiosks#create", as: :create_kiosk)
   delete("/kiosks", to: "kiosks#destroy", as: :destroy_kiosk)
+
+  # Purchases
+  get("/cart", to: "purchases#edit", as: :edit_cart)
+  post("/cart", to: "purchases#update", as: :update_cart)
+  delete("/cart", to: "purchases#destroy", as: :destroy_cart)
 
   # Products
   get("/foods-and-beverages", to: "products#new", as: :new_product)
