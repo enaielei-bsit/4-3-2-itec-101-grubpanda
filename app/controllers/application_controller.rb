@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
     $VALID_IMAGE_UPLOAD = "image/*"
 
     $TITLE = "GrubPanda"
-    $AUTHOR = "Nommel Isanar L. Amolat"
+    $AUTHOR = "Nommel Isanar L. Amolat and Hannie May G. Defacto"
 
     before_action() do |controller|
         @permissions = [
