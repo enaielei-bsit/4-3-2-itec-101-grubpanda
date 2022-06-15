@@ -1,3 +1,5 @@
+import Selector from "./selector.js";
+
 $(function() {
     const parenRegex = /\(([^)]+)\)/;
 
@@ -216,56 +218,56 @@ $(function() {
         }
     });
 
-    function select(type="all") {
-        if(type == "all") {
-            $(".selector.main").prop("checked", true);
-            $(".selector[type=checkbox]").each((i, e) => {
-                if(!$(e).hasClass("main") && !e.checked) {
-                    e.checked = true;
-                    $(e).trigger("change");
-                }
-            });
-        } else if(type == "none") {
-            $(".selector.main").prop("checked", false);
-            $(".selector[type=checkbox]").each((i, e) => {
-                if(!$(e).hasClass("main") && e.checked) {
-                    e.checked = false;
-                    $(e).trigger("change");
-                }
-            });
-        } else if(type == "inverse") {
-            $(".selector.main").prop("checked", false);
-            $(".selector[type=checkbox]").each((i, e) => {
-                if(!$(e).hasClass("main")) {
-                    e.checked = !e.checked;
-                    $(e).trigger("change");
-                }
-            });
-        }
-    }
+    // function select(type="all") {
+    //     if(type == "all") {
+    //         $(".selector.main").prop("checked", true);
+    //         $(".selector[type=checkbox]").each((i, e) => {
+    //             if(!$(e).hasClass("main") && !e.checked) {
+    //                 e.checked = true;
+    //                 $(e).trigger("change");
+    //             }
+    //         });
+    //     } else if(type == "none") {
+    //         $(".selector.main").prop("checked", false);
+    //         $(".selector[type=checkbox]").each((i, e) => {
+    //             if(!$(e).hasClass("main") && e.checked) {
+    //                 e.checked = false;
+    //                 $(e).trigger("change");
+    //             }
+    //         });
+    //     } else if(type == "inverse") {
+    //         $(".selector.main").prop("checked", false);
+    //         $(".selector[type=checkbox]").each((i, e) => {
+    //             if(!$(e).hasClass("main")) {
+    //                 e.checked = !e.checked;
+    //                 $(e).trigger("change");
+    //             }
+    //         });
+    //     }
+    // }
 
-    function updateSelected() {
-        let selected = [];
-        $(".selector[type=checkbox]").each((i, e) => {
-            if(!$(e).hasClass("main") && e.checked) {
-                selected.push(e.value);
-            }
-        });
-        $("#selected").attr("value", selected.join(","));
-    }
+    // function updateSelected() {
+    //     let selected = [];
+    //     $(".selector[type=checkbox]").each((i, e) => {
+    //         if(!$(e).hasClass("main") && e.checked) {
+    //             selected.push(e.value);
+    //         }
+    //     });
+    //     $("#selected").attr("value", selected.join(","));
+    // }
 
-    $(".selector[type=checkbox]").on("change", function() {
-        if($(this).hasClass("main")) {
-            let value = $(this).attr("value");
-            if(this.checked) select("all");
-            else select("none");
-        } else updateSelected();
-    });
+    // $(".selector[type=checkbox]").on("change", function() {
+    //     if($(this).hasClass("main")) {
+    //         let value = $(this).attr("value");
+    //         if(this.checked) select("all");
+    //         else select("none");
+    //     } else updateSelected();
+    // });
 
-    $(".select").on("click", function() {
-        let type = $(this).data("select-type");
-        select(type);
-    });
+    // $(".select").on("click", function() {
+    //     let type = $(this).data("select-type");
+    //     select(type);
+    // });
 
     let menuItemCount = 0;
 
@@ -343,4 +345,6 @@ $(function() {
     }
 
     setupMenuItems();
+
+    const selector = new Selector("0");
 });
