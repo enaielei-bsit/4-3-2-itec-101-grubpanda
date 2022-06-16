@@ -5,13 +5,13 @@
 <div class="ui divider"></div>
 <%= form_with(
     scope: :menu,
-    id: "user-form",
+    id: "menu-form",
     class: "ui form",
     url: create_menu_path()
 ) do |form| %>
     <div class="field">
         <%= form.label(:kiosk_id, "Kiosk") %>
-        <div id="kiosk" class="ui selection dropdown">
+        <div id="kiosk" class="ui selection dropdown kiosk">
             <%= form.hidden_field(:kiosk_id) %>
             <i class="dropdown icon"></i>
             <div class="default text"></div>
@@ -22,7 +22,7 @@
     <div class="field">
         <%= form.label(:name, "Name") %>
         <div class="ui left icon input">
-            <%= form.text_field(:name, placeholder: "JDC Product", value: nil) %>
+            <%= form.text_field(:name, value: nil) %>
             <i class="tag icon"></i>
         </div>
     </div>
@@ -30,56 +30,81 @@
     <div class="field">
         <%= form.label(:price) %>
         <div class="ui left icon input">
-            <%= form.number_field(:price, value: 0, min: 0) %>
+            <%= form.number_field(:price, value: "0.00", min: "0.00", step: "0.05") %>
             <i class="dollar sign icon"></i>
         </div>
     </div>
     <%= form.hidden_field(:items) %>
-    <div id="menu-items-parent" class="field">
-        <div class="fields menu-item">
-            <div class="eight wide field menu-item-product">
-                <%= label_tag(:product_id, "Food and Beverage") %>
-                <div id="product" class="ui selection dropdown">
-                    <%= hidden_field_tag(:product_id) %>
-                    <i class="dropdown icon"></i>
-                    <div class="default text"></div>
-                    <div class="menu">
+
+    <div class="field table-display">
+        <table class="ui very basic celled table">
+            <thead>
+                <tr>
+                    <th>Food and Beverage</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for p in @products %>
+                    <tr>
+                        <td><%= p.name %></td>
+                        <td style="width: 20%">
+                            <%= number_field_tag(nil, 0, min: 0, data: {
+                                "product-id" => p.id
+                            }, class: "product-quantity") %>
+                        </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+
+    <% if false %>
+        <div id="menu-items-parent" class="field">
+            <div class="fields menu-item item">
+                <div class="eight wide field menu-item-product">
+                    <%= label_tag(:product_id, "Food and Beverage") %>
+                    <div id="product" class="ui selection dropdown product">
+                        <%= hidden_field_tag(:product_id) %>
+                        <i class="dropdown icon"></i>
+                        <div class="default text"></div>
+                        <div class="menu">
+                        </div>
+                    </div>
+                </div>
+                <div class="five wide field menu-item-quantity">
+                    <%= label_tag(:quantity) %>
+                    <%= number_field_tag(:quantity, 1, min: 1) %>
+                </div>
+                <div class="field menu-item-controls">
+                    <label>&nbsp</label>
+                    <div class="ui mini stackable basic buttons">
+                        <button class="ui compact icon button move-up" title="Move up" type="button">
+                            <i class="caret up icon"></i>
+                        </button>
+                        <button class="ui compact icon button move-down" title="Move down" type="button">
+                            <i class="caret down icon"></i>
+                        </button>
+                        <button class="ui compact icon button remove" title="Remove" type="button">
+                            <i class="trash alternate icon"></i>
+                        </button>
+                        <button class="ui compact icon button add" title="Add" type="button">
+                            <i class="plus icon"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="five wide field menu-item-quantity">
-                <%= label_tag(:quantity) %>
-                <%= number_field_tag(:quantity, 1, min: 1) %>
-            </div>
-            <div class="field menu-item-controls">
-                <label>&nbsp</label>
-                <div class="ui mini stackable basic buttons">
-                    <button class="ui compact icon button move-up" title="Move up" type="button">
-                        <i class="caret up icon"></i>
-                    </button>
-                    <button class="ui compact icon button move-down" title="Move down" type="button">
-                        <i class="caret down icon"></i>
-                    </button>
-                    <button class="ui compact icon button remove" title="Remove" type="button">
-                        <i class="trash alternate icon"></i>
-                    </button>
-                    <button class="ui compact icon button add" title="Add" type="button">
-                        <i class="plus icon"></i>
-                    </button>
-                </div>
-            </div>
         </div>
-    </div>
+    <% end %>
+
     <div class="ui divider"></div>
     <div class="field">
         <%= form.label(:description) %>
-        <%= form.text_area(:description, placeholder: "...", rows: 3, value: nil) %>
+        <%= form.text_area(:description, rows: 3, value: nil) %>
     </div>
     <div class="ui right aligned fitted basic segment">
         <%= form.submit("Register", class: "ui green button") %>
     </div>
-    <%= render("partials/messages", messages: flash[:messages]) %>
-    <div class="ui error message form-error-message"></div>
 <% end %>
 
 <div class="ui divider"></div>

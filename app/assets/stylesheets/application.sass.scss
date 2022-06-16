@@ -54,3 +54,13 @@ footer {
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+.messages {
+    margin-bottom: 1em !important;
+}
+
+.table-display {
+    max-height: 20em;
+    overflow-y: scroll;
+    padding-right: 1em;
+}

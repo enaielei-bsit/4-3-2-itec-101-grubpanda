@@ -35,4 +35,7 @@ Rails.application.routes.draw do
   get("/menus", to: "menus#new", as: :new_menu)
   post("/menus", to: "menus#create", as: :create_menu)
   delete("/menus", to: "menus#destroy", as: :destroy_menu)
+
+  # API
+  get("/api", to: "apis#index", as: :api)
 end

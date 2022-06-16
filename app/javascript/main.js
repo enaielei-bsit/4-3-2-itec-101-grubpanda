@@ -1,4 +1,5 @@
 import Selector from "./selector.js";
+import List from "./list.js";
 
 $(function() {
     const parenRegex = /\(([^)]+)\)/;
@@ -8,6 +9,8 @@ $(function() {
         'provinces' : 'https://ph-locations-api.buonzz.com/v1/provinces',
         'cities' : 'https://ph-locations-api.buonzz.com/v1/cities',
         'barangays' : 'https://ph-locations-api.buonzz.com/v1/barangays',
+
+        'api' : '/api?operation={operation}&args={args}'
     };
 
     $(".ui.dropdown").dropdown();
@@ -218,133 +221,57 @@ $(function() {
         }
     });
 
-    // function select(type="all") {
-    //     if(type == "all") {
-    //         $(".selector.main").prop("checked", true);
-    //         $(".selector[type=checkbox]").each((i, e) => {
-    //             if(!$(e).hasClass("main") && !e.checked) {
-    //                 e.checked = true;
-    //                 $(e).trigger("change");
-    //             }
-    //         });
-    //     } else if(type == "none") {
-    //         $(".selector.main").prop("checked", false);
-    //         $(".selector[type=checkbox]").each((i, e) => {
-    //             if(!$(e).hasClass("main") && e.checked) {
-    //                 e.checked = false;
-    //                 $(e).trigger("change");
-    //             }
-    //         });
-    //     } else if(type == "inverse") {
-    //         $(".selector.main").prop("checked", false);
-    //         $(".selector[type=checkbox]").each((i, e) => {
-    //             if(!$(e).hasClass("main")) {
-    //                 e.checked = !e.checked;
-    //                 $(e).trigger("change");
-    //             }
-    //         });
-    //     }
-    // }
+    const selector = new Selector("0");
 
-    // function updateSelected() {
-    //     let selected = [];
-    //     $(".selector[type=checkbox]").each((i, e) => {
-    //         if(!$(e).hasClass("main") && e.checked) {
-    //             selected.push(e.value);
-    //         }
-    //     });
-    //     $("#selected").attr("value", selected.join(","));
-    // }
+    function updateBaseFromMenu() {
+        const ls = $.map($(".product-quantity").toArray(), function(e, i) {
+            const qu = Math.max(parseInt($(e).val()), 0);
+            const id = $(e).data("product-id");
 
-    // $(".selector[type=checkbox]").on("change", function() {
-    //     if($(this).hasClass("main")) {
-    //         let value = $(this).attr("value");
-    //         if(this.checked) select("all");
-    //         else select("none");
-    //     } else updateSelected();
-    // });
-
-    // $(".select").on("click", function() {
-    //     let type = $(this).data("select-type");
-    //     select(type);
-    // });
-
-    let menuItemCount = 0;
-
-    function updateMenuItems() {
-        let val = $(".menu-item-quantity input").toArray()
-            .map((e) => e.value).join(",");
+            return [[id, qu]];
+        }).filter((v, i) => v[1] > 0);
+        const val = ls.map((v, i) => v.join("-")).join(",");
+        
         $("#menu_items").val(val);
     }
 
-    function setupMenuItems() {
-        let i = 0;
-        for(let item of $(".menu-item")) {
-            let qty = "quantity-" + i;
-            let pro = "product-" + i;
+    $(".product-quantity").on("change", updateBaseFromMenu);
 
-            $(item).find(".menu-item-quantity label").attr("for", qty);
-            $(item).find(".menu-item-quantity input")
-                .attr("id", qty).removeAttr("name")
-                .off("input")
-                .on("input", updateMenuItems);
 
-            // TODO: Set also the dropdown product.
 
-            $(item).find(".button.add").off("click");
-            $(item).find(".button.add").on("click", function() {
-                let item = $(this).closest(".menu-item");
-                let clone = item.clone()
-                clone.insertAfter(item);
-                clone.find(".menu-item-quantity input").val(1);
-                setupMenuItems();
-            });
-            
-            let rm = $(item).find(".button.remove");
-            rm.off("click");
-            rm.addClass("disabled");
-            if($(item).siblings().length != 0) {
-                rm.removeClass("disabled");
-                $(item).find(".button.remove").on("click", function() {
-                    let item = $(this).closest(".menu-item");
-                    item.remove();
-                    setupMenuItems();
-                });
+    
+
+    $(".dropdown.kiosk").dropdown({
+        apiSettings: {
+            action: "api",
+            cache: false,
+            beforeSend: function(settings) {
+                settings.urlData = {
+                    operation: "get",
+                    args: "kiosks"
+                }
+                return settings;
+            },
+            onResponse: function(response) {
+                let res = {
+                    success: true,
+                    results: []
+                }
+
+                for(let k in response) {
+                    d = response[k]
+                    res.results.push({
+                        value: d.id,
+                        name: d.name,
+                    });
+                }
+
+                return res;
             }
-            
-            let up = $(item).find(".button.move-up");
-            up.off("click");
-            up.addClass("disabled");
-            if($(item).prev().length != 0) {
-                up.removeClass("disabled");
-                up.on("click", function() {
-                    let item = $(this).closest(".menu-item");
-                    let target = item.prev();
-                    $(item).hide().insertBefore(target).show("fast");
-                    setupMenuItems();
-                });
-            }
-
-            let dn = $(item).find(".button.move-down");
-            dn.off("click");
-            dn.addClass("disabled");
-            if($(item).next().length != 0) {
-                dn.removeClass("disabled");
-                dn.on("click", function() {
-                    let item = $(this).closest(".menu-item");
-                    let target = item.next();
-                    $(item).hide().insertAfter(target).show("fast");
-                    setupMenuItems();
-                });
-            }
-
-            i++;
+        },
+        saveRemoteData: false,
+        onChange: function(value, text, $choice) {
+            // toggleBookingSeat();
         }
-
-        menuItemCount = i;
-    }
-
-    setupMenuItems();
-
-    const selector = new Selector("0");
+    });
 });

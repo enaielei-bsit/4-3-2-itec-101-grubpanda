@@ -12,14 +12,14 @@
     <div class="field">
         <%= form.label(:email) %>
         <div class="ui left icon input">
-            <%= form.email_field(:email, placeholder: "juan.dela.cruz@email.com", value: @session[:email]) %>
+            <%= form.email_field(:email, value: @session[:email]) %>
             <i class="at icon"></i>
         </div>
     </div>
     <div class="field">
         <%= form.label(:password) %>
         <div class="ui left icon input">
-            <%= form.password_field(:password, placeholder: "@yourPassword1234") %>
+            <%= form.password_field(:password) %>
             <i class="key icon"></i>
         </div>
     </div>
@@ -37,6 +37,4 @@
             <%= form.submit("Submit", class: "ui green button") %>
         </div>
     </div>
-    <%= render("partials/messages", messages: flash[:messages]) %>
-    <div class="ui error message form-error-message"></div>
 <% end %>

@@ -5,7 +5,8 @@ class User < ApplicationRecord
         self.email = self.email&.downcase()
     end
 
-    has_many(:permissions)
+    has_many(:permissions, dependent: :destroy)
+    belongs_to(:address)
 
     validates(
         :email,
@@ -32,36 +33,6 @@ class User < ApplicationRecord
     validates(
         :middle_name,
         length: {maximum: 25}
-    )
-    
-    validates(
-        :region,
-        presence: true,
-        length: {maximum: 50}
-    )
-    
-    validates(
-        :province,
-        presence: true,
-        length: {maximum: 50}
-    )
-    
-    validates(
-        :city,
-        presence: true,
-        length: {maximum: 50}
-    )
-    
-    validates(
-        :barangay,
-        presence: true,
-        length: {maximum: 50}
-    )
-    
-    validates(
-        :street,
-        presence: true,
-        length: {maximum: 100}
     )
 
     validates(

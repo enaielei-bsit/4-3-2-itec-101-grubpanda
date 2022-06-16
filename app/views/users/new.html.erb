@@ -12,7 +12,7 @@
     <div class="field">
         <%= form.label(:email) %>
         <div class="ui left icon input">
-            <%= form.email_field(:email, placeholder: "juan.dela.cruz@email.com", value: @user.email) %>
+            <%= form.email_field(:email, value: @user.email) %>
             <i class="at icon"></i>
         </div>
     </div>
@@ -21,17 +21,17 @@
         <div class="field">
             <%= form.label(:family_name, "Family Name") %>
             <div class="ui left icon input">
-                <%= form.text_field(:family_name, placeholder: "Cruz", value: nil) %>
+                <%= form.text_field(:family_name, value: nil) %>
                 <i class="id badge icon"></i>
             </div>
         </div>
         <div class="field">
             <%= form.label(:given_name, "Given Name") %>
-            <%= form.text_field(:given_name, placeholder: "Juan", value: nil) %>
+            <%= form.text_field(:given_name, value: nil) %>
         </div>
         <div class="field">
             <%= form.label(:middle_name, "Middle Name") %>
-            <%= form.text_field(:middle_name, placeholder: "Dela", value: nil) %>
+            <%= form.text_field(:middle_name, value: nil) %>
         </div>
     </div>
     <div class="ui divider"></div>
@@ -70,13 +70,13 @@
         </div>
         <div class="field">
             <%= form.label(:barangay) %>
-            <%= form.text_field(:barangay, placeholder: "Molino III", value: nil) %>
+            <%= form.text_field(:barangay, value: nil) %>
         </div>
     </div>
     <div class="field">
         <%= form.label(:street) %>
         <div class="ui left icon input">
-            <%= form.text_field(:street, placeholder: "Ginto St.", value: nil) %>
+            <%= form.text_field(:street, value: nil) %>
             <i class="marker icon"></i>
         </div>
     </div>
@@ -85,13 +85,13 @@
         <div class="field">
             <%= form.label(:password) %>
             <div class="ui left icon input">
-                <%= form.password_field(:password, placeholder: "@yourPassword1234") %>
+                <%= form.password_field(:password) %>
                 <i class="key icon"></i>
             </div>
         </div>
         <div class="field">
             <%= form.label(:password_confirmation, "Password Confirmation") %>
-            <%= form.password_field(:password_confirmation, placeholder: "@yourPassword1234") %>
+            <%= form.password_field(:password_confirmation) %>
         </div>
     </div>
     <div class="ui right aligned fitted basic segment">
@@ -101,6 +101,4 @@
             <%= form.submit("Submit", class: "ui green button") %>
         </div>
     </div>
-    <%= render("partials/messages", messages: flash[:messages]) %>
-    <div class="ui error message form-error-message"></div>
 <% end %>

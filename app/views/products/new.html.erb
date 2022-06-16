@@ -4,15 +4,15 @@
 <%= render("partials/page_header", title: "Foods and Beverages", subtitle: "Manage your foods and beverages.") %>
 <div class="ui divider"></div>
 <%= form_with(
-    scope: :product,
-    id: "user-form",
+    model: @product,
+    id: "product-form",
     class: "ui form",
     url: create_product_path()
 ) do |form| %>
     <div class="field">
         <%= form.label(:name, "Name") %>
         <div class="ui left icon input">
-            <%= form.text_field(:name, placeholder: "JDC Product", value: nil) %>
+            <%= form.text_field(:name, value: nil) %>
             <i class="tag icon"></i>
         </div>
     </div>
@@ -20,13 +20,13 @@
     <div class="field">
         <%= form.label(:serving_size, "Serving Size") %>
         <div class="ui left icon input">
-            <%= form.text_field(:serving_size, placeholder: "8 slices", value: nil) %>
+            <%= form.text_field(:serving_size, value: nil) %>
             <i class="concierge bell icon"></i>
         </div>
     </div>
     <div class="field">
         <%= form.label(:description) %>
-        <%= form.text_area(:description, placeholder: "...", rows: 3, value: nil) %>
+        <%= form.text_area(:description, rows: 3, value: nil) %>
     </div>
     <div class="field">
         <%= form.label(:images) %>
@@ -36,8 +36,6 @@
     <div class="ui right aligned fitted basic segment">
         <%= form.submit("Register", class: "ui green button") %>
     </div>
-    <%= render("partials/messages", messages: flash[:messages]) %>
-    <div class="ui error message form-error-message"></div>
 <% end %>
 
 <div class="ui divider"></div>

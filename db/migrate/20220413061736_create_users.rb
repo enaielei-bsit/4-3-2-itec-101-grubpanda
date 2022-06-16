@@ -7,12 +7,6 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string(:given_name)
       t.string(:middle_name)
 
-      t.string(:region)
-      t.string(:province)
-      t.string(:city)
-      t.string(:barangay)
-      t.string(:street)
-
       t.string(:password_digest)
       t.string(:session_digest)
 

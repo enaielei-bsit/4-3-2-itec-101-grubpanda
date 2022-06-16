@@ -12,15 +12,15 @@
 <div class="ui divider"></div>
 <% if @client %>
     <%= form_with(
-        scope: :kiosk,
-        id: "user-form",
+        model: @kiosk,
+        id: "kiosk-form",
         class: "ui form",
         url: create_kiosk_path()
     ) do |form| %>
         <div class="field">
             <%= form.label(:name, "Name") %>
             <div class="ui left icon input">
-                <%= form.text_field(:name, placeholder: "JDC Kiosk", value: nil) %>
+                <%= form.text_field(:name, value: nil) %>
                 <i class="tag icon"></i>
             </div>
         </div>
@@ -29,13 +29,13 @@
             <div class="field">
                 <%= form.label(:email) %>
                 <div class="ui left icon input">
-                    <%= form.email_field(:email, placeholder: "juan.dela.cruz@email.com") %>
+                    <%= form.email_field(:email) %>
                     <i class="at icon"></i>
                 </div>
             </div>
             <div class="field">
                 <%= form.label(:mobile_number, "Mobile Number") %>
-                <%= form.text_field(:mobile_number, placeholder: "09987654321", value: nil) %>
+                <%= form.text_field(:mobile_number, value: nil) %>
             </div>
         </div>
         <div class="ui divider"></div>
@@ -45,7 +45,7 @@
                 <div id="region" class="ui selection dropdown">
                     <%= form.hidden_field(:region) %>
                     <i class="dropdown icon"></i>
-                    <div class="default text">CALABARZON</div>
+                    <div class="default text"></div>
                     <div class="menu">
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                 <div id="province" class="ui selection dropdown">
                     <%= form.hidden_field(:province) %>
                     <i class="dropdown icon"></i>
-                    <div class="default text">Cavite</div>
+                    <div class="default text"></div>
                     <div class="menu">
                     </div>
                 </div>
@@ -67,27 +67,27 @@
                 <div id="city" class="ui selection dropdown">
                     <%= form.hidden_field(:city) %>
                     <i class="dropdown icon"></i>
-                    <div class="default text">Bacoor</div>
+                    <div class="default text"></div>
                     <div class="menu">
                     </div>
                 </div>
             </div>
             <div class="field">
                 <%= form.label(:barangay) %>
-                <%= form.text_field(:barangay, placeholder: "Molino III", value: nil) %>
+                <%= form.text_field(:barangay, value: nil) %>
             </div>
         </div>
         <div class="field">
             <%= form.label(:street) %>
             <div class="ui left icon input">
-                <%= form.text_field(:street, placeholder: "Ginto St.", value: nil) %>
+                <%= form.text_field(:street, value: nil) %>
                 <i class="marker icon"></i>
             </div>
         </div>
         <div class="ui divider"></div>
         <div class="field">
             <%= form.label(:description) %>
-            <%= form.text_area(:description, placeholder: "...", rows: 3, value: nil) %>
+            <%= form.text_area(:description, rows: 3, value: nil) %>
         </div>
         <div class="field">
             <%= form.label(:images) %>
@@ -97,8 +97,6 @@
         <div class="ui right aligned fitted basic segment">
             <%= form.submit("Register", class: "ui green button") %>
         </div>
-        <%= render("partials/messages", messages: flash[:messages]) %>
-        <div class="ui error message form-error-message"></div>
     <% end %>
 
     <div class="ui divider"></div>
