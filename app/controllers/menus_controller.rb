@@ -27,6 +27,7 @@ class MenusController < ApplicationController
         )
 
         errs = []
+        items = []
 
         if @menu.save()
             begin
@@ -35,6 +36,10 @@ class MenusController < ApplicationController
                     product_id: i.first,
                     quantity: i.last
                 )}
+
+                if items.length == 0
+                    raise RangeError.new
+                end
 
                 for item in items
                     if !item.save()
@@ -50,19 +55,21 @@ class MenusController < ApplicationController
                 )
                 redirect_to(new_menu_url())
                 return
+            rescue RangeError
+                errs << "Menu must at least have one Item"
             rescue => e
-                for item in menuitems
-                    item.destroy()
-                end
                 errs << "Menu Items are invalid"
             end
+        end
+        for item in items
+            item.destroy()
         end
         @menu.destroy()
 
         Utils.add_messages(
             flash.now,
             "Failed Menu Registration",
-            @menu.errors.full_messages,
+            @menu.errors.full_messages + errs,
             "negative",
         )
         render(:new, status: :unprocessable_entity)

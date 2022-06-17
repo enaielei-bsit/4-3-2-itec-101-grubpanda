@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_16_185750) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_17_073628) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,6 +58,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_185750) do
     t.index ["kiosk_id"], name: "index_menus_on_kiosk_id"
   end
 
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "address_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_orders_on_address_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
   create_table "permissions", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "value"
@@ -74,6 +84,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_185750) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_products_on_name", unique: true
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "menu_id"
+    t.bigint "order_id"
+    t.integer "price", default: 0
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_purchases_on_menu_id"
+    t.index ["order_id"], name: "index_purchases_on_order_id"
+    t.index ["user_id", "menu_id"], name: "index_purchases_on_user_id_and_menu_id", unique: true
+    t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -94,6 +118,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_185750) do
   add_foreign_key "menu_items", "menus"
   add_foreign_key "menu_items", "products"
   add_foreign_key "menus", "kiosks"
+  add_foreign_key "orders", "addresses"
+  add_foreign_key "orders", "users"
   add_foreign_key "permissions", "users"
+  add_foreign_key "purchases", "menus"
+  add_foreign_key "purchases", "orders"
+  add_foreign_key "purchases", "users"
   add_foreign_key "users", "addresses"
 end

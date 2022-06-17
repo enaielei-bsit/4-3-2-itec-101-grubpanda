@@ -4,7 +4,7 @@
 <h2 class="ui center aligned header">
     <div class="content">
         <%= @name %>
-        <div class="sub header" title="Full Address">City, Province</div>
+        <div class="sub header" title="Full Address"><%= [@kiosk.address.city, @kiosk.address.province].join(", ") %></div>
     </div>
 </h2>
 
@@ -15,25 +15,27 @@
     <div class="ui list">
         <div class="item">
             <div class="header">Address</div>
-            Street, Barangay, City, Province
+            <%= @kiosk.address.full %>
         </div>
     </div>
     <div class="ui very relaxed horizontal list">
         <div class="item">
             <div class="header">Email</div>
-            store@email.com
+            <%= @kiosk.email %>
         </div>
         <div class="item">
             <div class="header">Mobile Number</div>
-            0998-765-4321
+            <%= @kiosk.mobile_number %>
         </div>
     </div>
-    <div class="ui list">
-        <div class="item">
-            <div class="header">Description</div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar dictum rutrum. Nulla pellentesque faucibus leo, quis imperdiet neque venenatis a.
+    <% if !@kiosk.description %>
+        <div class="ui list">
+            <div class="item">
+                <div class="header">Description</div>
+                <%= @kiosk.description %>
+            </div>
         </div>
-    </div>
+    <% end %>
 </div>
 
 <h3 class="ui header">
@@ -54,65 +56,81 @@
   Menus
 </h3>
 <div class="ui basic fitted segment">
-    <%= hidden_field_tag(:selected, "") %>
-    <table class="ui selectable celled mini table">
-        <thead>
-            <tr>
-                <th colspan="4" class="right aligned">
-                    <button class="ui tiny compact button select" data-select-type="all" title="Select all" type="button">
-                        All
-                    </button>
-                    <button class="ui tiny compact button select" data-select-type="none" title="Deselect all" type="button">
-                        None
-                    </button>
-                    <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection" type="button">
-                        Invert
-                    </button>
-                    <%= number_field_tag(:quantity, 1, min: 1, max: 999, style: "width: 4em", title: "Quantity") %>
-                    <a href="#" class="ui tiny compact icon button" title="Add selected to Cart">
-                        <i class="cart plus icon"></i>
-                    </a>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    <div class="ui fitted checkbox">
-                        <input class="selector main" type="checkbox" data-main-selector-id="0"><label></label>
-                    </div>
-                </th>
-                <th>Name</th>
-                <th>Items</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% for i in 1..10 %>
+    <%= form_with(
+        scope: :purchase,
+        id: "kiosk-purchase-form",
+        class: "ui form",
+        url: create_cart_path(ref: show_kiosk_url(@kiosk.id))
+    ) do |form| %>
+        <%= hidden_field_tag(:selected, "") %>
+        <%= form.hidden_field(:orders) %>
+
+        <table class="ui selectable celled mini table">
+            <thead>
                 <tr>
-                    <td class="collapsing">
-                        <div class="ui fitted checkbox">
-                            <input class="selector" value="1" type="checkbox" data-selector-id="0"><label></label>
-                        </div>
-                    </td>
-                    <td>
-                        <h6 class="ui image header">
-                            <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
-                            <div class="content">
-                                <%= link_to("Menu #{i}", "#") %>
-                            </div>
-                            </div>
-                        </h6>
-                    </td>
-                    <td>...</td>
-                    <td>...</td>
+                    <th colspan="4" class="right aligned">
+                        <button class="ui tiny compact button select all" data-select-type="all" title="Select all" type="button">
+                            All
+                        </button>
+                        <button class="ui tiny compact button select none" data-select-type="none" title="Deselect all" type="button">
+                            None
+                        </button>
+                        <button class="ui tiny compact button select inverse" data-select-type="inverse" title="Invert selection" type="button">
+                            Invert
+                        </button>
+                        <%= number_field_tag("", 1, id: "purchase-quantity", min: 1, max: 999, style: "width: 5em", title: "Quantity") %>
+                        <button type="submit" class="ui tiny compact icon button" title="Add selected to Cart">
+                            <i class="cart plus icon"></i>
+                        </button>
+                    </th>
                 </tr>
+                <tr>
+                    <th>
+                        <div class="ui fitted checkbox">
+                            <input class="selector main" type="checkbox" data-main-selector-id="0"><label></label>
+                        </div>
+                    </th>
+                    <th>Name</th>
+                    <th>Items</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for m in @menus %>
+                    <tr>
+                        <td class="collapsing">
+                            <div class="ui fitted checkbox">
+                                <input class="selector" value="<%= m.id %>" type="checkbox" data-selector-id="0"><label></label>
+                            </div>
+                        </td>
+                        <td>
+                            <h6 class="ui image header">
+                                <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                                <div class="content">
+                                    <%= link_to(m.name, "#") %>
+                                </div>
+                                </div>
+                            </h6>
+                        </td>
+                        <td><%= raw m.items.map() {|i|
+                            "#{i.product.name} (#{i.quantity})"}.join(", ") %>
+                        </td>
+                        <td>&#x20B1;<%= number_with_precision(m.price, precision: 2) %></td>
+                    </tr>
+                <% end %>
+                <% if @menus.length == 0 %>
+                    <tr><td colspan="4" class="center aligned">No entry</td></tr>
+                <% end %>
+            </tbody>
+            <% if @menus.total_pages > 1 %>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="center aligned">
+                            <%= render("partials/pagination", page: @menus.current_page, pages: @menus.total_pages, count: @menus.size, size: "mini") %>
+                        </th>
+                    </tr>
+                </tfoot>
             <% end %>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="4" class="center aligned">
-                    <%= render("partials/pagination", page: 1, pages: 5, size: "mini") %>
-                </th>
-            </tr>
-        </tfoot>
-    </table>
+        </table>
+    <% end %>
 </div>

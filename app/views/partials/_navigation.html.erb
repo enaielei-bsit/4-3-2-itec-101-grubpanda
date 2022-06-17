@@ -16,13 +16,6 @@
             data: nil
         },
         {
-            url: @signed_in && @customer ? edit_cart_path() : nil,
-            active: controller.on_page("purchases", "edit", "update"),
-            text: "Cart",
-            icon: "green cart",
-            data: nil
-        },
-        {
             url: @signed_in && @permissions.include?(Permission::CLIENT) ? create_product_path() : nil,
             active: controller.on_page("products", "new", "create", "destroy"),
             text: "Foods & Beverages",
@@ -34,6 +27,13 @@
             active: controller.on_page("menus", "new", "create", "destroy"),
             text: "Menus",
             icon: "green clipboard list",
+            data: nil
+        },
+        {
+            url: @signed_in && @customer ? edit_cart_path() : nil,
+            active: controller.on_page("purchases", "edit", "update"),
+            text: "Cart",
+            icon: "green cart",
             data: nil
         },
         {

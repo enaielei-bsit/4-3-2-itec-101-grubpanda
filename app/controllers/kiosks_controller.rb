@@ -4,11 +4,14 @@ class KiosksController < ApplicationController
         if ["new", "create", "destroy"].include?(action) && !@signed_in
             redirect_to(new_session_url())
         end
+        
+        @kiosks = Kiosk.page(params[:page] || 1).per(params[:count] || 10)
     end
 
     def show()
-        @kiosk = params[:id]
-        @name = "Store #{@kiosk}"
+        @kiosk = Kiosk.find_by(id: params[:id])
+        @menus = @kiosk.menus.page(params[:page] || 1).per(params[:count] || 10)
+        @name = @kiosk.name
     end
 
     def new()

@@ -1,6 +1,7 @@
 class Menu < ApplicationRecord
     belongs_to(:kiosk)
     has_many(:menu_items, dependent: :destroy)
+    has_many(:purchases, dependent: :destroy)
 
     validates(
         :name,
@@ -23,4 +24,8 @@ class Menu < ApplicationRecord
         :description,
         length: {maximum: 500}
     )
+
+    def items()
+        return menu_items
+    end
 end

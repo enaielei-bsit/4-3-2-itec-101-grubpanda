@@ -6,6 +6,8 @@ class User < ApplicationRecord
     end
 
     has_many(:permissions, dependent: :destroy)
+    has_many(:purchases, dependent: :destroy)
+    has_many(:orders, dependent: :destroy)
     belongs_to(:address)
 
     validates(

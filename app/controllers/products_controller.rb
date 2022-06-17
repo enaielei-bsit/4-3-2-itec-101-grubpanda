@@ -4,6 +4,8 @@ class ProductsController < ApplicationController
         if ["new", "create", "destroy"].include?(action) && !@signed_in
             redirect_to(new_session_url())
         end
+        
+        @products = Product.page(params[:page] || 1).per(params[:count] || 10)
     end
     
     def show()

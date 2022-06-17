@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 
     before_action() do |controller|
         @permissions = [
+            Permission::ADMIN,
             Permission::CLIENT,
             Permission::CUSTOMER
         ]
@@ -17,6 +18,7 @@ class ApplicationController < ActionController::Base
         
         per = Permission
         pers = @permissions
+        @admin = pers.include?(per::ADMIN)
         @client = pers.include?(per::CLIENT)
         @customer = pers.include?(per::CUSTOMER)
 

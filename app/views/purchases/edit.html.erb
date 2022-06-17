@@ -5,23 +5,26 @@
 <div class="ui divider"></div>
 
 <%= form_with(
-    scope: :purchase,
+    model: @purchase,
     id: "purchase-form",
     class: "ui form",
+    method: :patch,
     url: update_cart_path()
 ) do |form| %>
+    <%= form.hidden_field(:orders) %>
     <%= hidden_field_tag(:selected, "") %>
+    
     <table class="ui very basic selectable celled mini table">
         <thead>
             <tr>
                 <th colspan="5" class="right aligned">
-                    <button class="ui tiny compact button select" data-select-type="all" title="Select all" type="button">
+                    <button class="ui tiny compact button select all" data-select-type="all" title="Select all" type="button">
                         All
                     </button>
-                    <button class="ui tiny compact button select" data-select-type="none" title="Deselect all" type="button">
+                    <button class="ui tiny compact button select none" data-select-type="none" title="Deselect all" type="button">
                         None
                     </button>
-                    <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection" type="button">
+                    <button class="ui tiny compact button select inverse" data-select-type="inverse" title="Invert selection" type="button">
                         Invert
                     </button>
                     <% if false %>
@@ -50,43 +53,44 @@
             </tr>
         </thead>
         <tbody>
-            <% for i in 1..10 %>
-            <%
-                name = "Item #{i}"
-            %>
+            <% for p in @purchases %>
                 <tr>
                     <td class="collapsing">
                         <div class="ui fitted checkbox">
-                            <input class="selector" value="1" type="checkbox" data-selector-id="0"><label></label>
+                            <input class="selector" value="<%= p.id %>" type="checkbox" data-selector-id="0"><label></label>
                         </div>
                     </td>
                     <td>
                         <h6 class="ui image header">
                             <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
                             <div class="content">
-                                <%= link_to(name, show_kiosk_path(i)) %>
+                                <%= link_to(p.menu.name, "#") %>
                             </div>
                             </div>
                         </h6>
                     </td>
-                    <td class="collapsing">₱99,999.00</td>
-                    <td class="collapsing">999</td>
-                    <td class="collapsing">₱99,999.00</td>
+                    <td class="collapsing">&#x20B1;<%= number_with_precision(p.menu.price, precision: 2) %></td>
+                    <td style="width: 17%">
+                        <%= number_field_tag(nil, p.quantity, min: 1, data: {
+                            "purchase-id" => p.id,
+                            "purchase-price" => p.menu.price,
+                            "purchase-total" => p.total,
+                        }, class: "purchase-quantity") %>
+                    </td>
+                    <td class="collapsing">&#x20B1;<span class="purchase-total"><%= number_with_precision(p.total, precision: 2) %></span></td>
                 </tr>
+            <% end %>
+            <% if @purchases.length == 0 %>
+                <tr><td colspan="5" class="center aligned">No entry</td></tr>
             <% end %>
         </tbody>
         <tfoot>
-            <tr>
-                <th colspan="5" class="center aligned">
-                    <%= render("partials/pagination", page: 1, pages: 3, size: "mini") %>
-                </th>
-            </tr>
             <tr>
                 <td colspan="4" class="right aligned">
                     <h3 class="ui header">Grand Total</h3>
                 </td>
                 <td>
-                    <h3 class="ui header">₱99,999.00</h3>
+                    <h3 class="ui header">&#x20B1;<span class="purchase-grand-total"><%= number_with_precision(@ptotal, precision: 2) %></span></h3>
                 </td>
             </tr>
         </tfoot>

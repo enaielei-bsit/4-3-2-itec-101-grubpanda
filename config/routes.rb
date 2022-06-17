@@ -22,8 +22,9 @@ Rails.application.routes.draw do
   delete("/kiosks", to: "kiosks#destroy", as: :destroy_kiosk)
 
   # Purchases
+  post("/cart", to: "purchases#create", as: :create_cart)
   get("/cart", to: "purchases#edit", as: :edit_cart)
-  post("/cart", to: "purchases#update", as: :update_cart)
+  patch("/cart", to: "purchases#update", as: :update_cart)
   delete("/cart", to: "purchases#destroy", as: :destroy_cart)
 
   # Products
@@ -38,4 +39,5 @@ Rails.application.routes.draw do
 
   # API
   get("/api", to: "apis#index", as: :api)
+  post("/api", to: "apis#index", as: :api_post)
 end

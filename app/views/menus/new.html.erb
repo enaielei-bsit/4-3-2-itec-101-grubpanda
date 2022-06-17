@@ -31,7 +31,7 @@
         <%= form.label(:price) %>
         <div class="ui left icon input">
             <%= form.number_field(:price, value: "0.00", min: "0.00", step: "0.05") %>
-            <i class="dollar sign icon"></i>
+            <i class="ruble sign icon"></i>
         </div>
     </div>
     <%= form.hidden_field(:items) %>
@@ -113,13 +113,13 @@
     <thead>
         <tr>
             <th colspan="4" class="right aligned">
-                <button class="ui tiny compact button select" data-select-type="all" title="Select all" type="button">
+                <button class="ui tiny compact button select all" data-select-type="all" title="Select all" type="button">
                     All
                 </button>
-                <button class="ui tiny compact button select" data-select-type="none" title="Deselect all" type="button">
+                <button class="ui tiny compact button select none" data-select-type="none" title="Deselect all" type="button">
                     None
                 </button>
-                <button class="ui tiny compact button select" data-select-type="inverse" title="Invert selection" type="button">
+                <button class="ui tiny compact button select inverse" data-select-type="inverse" title="Invert selection" type="button">
                     Invert
                 </button>
                 <% if false %>

@@ -222,20 +222,25 @@ $(function() {
     });
 
     const selector = new Selector("0");
+    $(".select.all").on("click", () => selector.selectAll());
+    $(".select.none").on("click", () => selector.deselectAll());
+    $(".select.inverse").on("click", () => selector.invertSelection());
 
-    function updateBaseFromMenu() {
-        const ls = $.map($(".product-quantity").toArray(), function(e, i) {
-            const qu = Math.max(parseInt($(e).val()), 0);
-            const id = $(e).data("product-id");
+    if($("#menu-form").length != 0) {
+        function updateBaseFromMenu() {
+            const ls = $.map($(".product-quantity").toArray(), function(e, i) {
+                const qu = Math.max(parseInt($(e).val()), 0);
+                const id = $(e).data("product-id");
 
-            return [[id, qu]];
-        }).filter((v, i) => v[1] > 0);
-        const val = ls.map((v, i) => v.join("-")).join(",");
-        
-        $("#menu_items").val(val);
+                return [[id, qu]];
+            }).filter((v, i) => v[1] > 0);
+            const val = ls.map((v, i) => v.join("-")).join(",");
+            
+            $("#menu_items").val(val);
+        }
+
+        $(".product-quantity").on("change", updateBaseFromMenu);
     }
-
-    $(".product-quantity").on("change", updateBaseFromMenu);
 
 
 
@@ -274,4 +279,64 @@ $(function() {
             // toggleBookingSeat();
         }
     });
+
+    if($("#kiosk-purchase-form").length != 0) {
+        function updateBaseFromPurchase() {
+            const qu = Math.max(parseInt($("#purchase-quantity").val()), 0);
+            const val = qu != 0 ?
+                selector.selectedValues.map((v, i) => `${v}-${qu}`).join(",") :
+                "";
+            
+            $("#purchase_orders").val(val);
+        }
+
+        $("#purchase-quantity").on("change", updateBaseFromPurchase);
+        $(selector.subs).on("change", updateBaseFromPurchase);
+    }
+
+
+    $(".purchase-quantity").on("change", function() {
+        const id = $(this).data("purchase-id");
+        const pr = parseFloat($(this).data("purchase-price"));
+        const qt = Math.max(parseInt($(this).val()), 1);
+        
+        const th = this;
+        const jr = $.post("/api", {
+            operation: "post",
+            args: {
+                type: "update-purchase",
+                search: {id},
+                values: {
+                    quantity: qt
+                }
+            }
+        }).done(function() {
+            const total = (pr * qt).toFixed(2);
+            const tr = $(th).closest("tr");
+
+            tr.find(".purchase-quantity").data("purchase-total", total);
+            tr.find(".purchase-total").text(total);
+
+            updateGrandTotal();
+        });
+    });
+
+    function updateGrandTotal() {
+        const gtotal = $.map($(".purchase-quantity"), function(v, i) {
+            const tr = $(v).closest("tr");
+            if(!tr.find(".selector").is(":checked")) return 0;
+            return parseFloat($(v).data("purchase-total"));
+        }).reduce((p, c) => p + c, 0).toFixed(2);
+
+        $(".purchase-grand-total").text(gtotal);
+    }
+
+    $(selector.subs).on("change", updateGrandTotal);
+
+    if($("#purchase-form").length != 0)  {
+        $(selector.subs).on("change", function() {
+            $("#purchase_orders").val(selector.selectedValues.join(","));
+        });
+        selector.selectAll();
+    }
 });

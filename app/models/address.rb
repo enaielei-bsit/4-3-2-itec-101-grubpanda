@@ -28,4 +28,8 @@ class Address < ApplicationRecord
         presence: true,
         length: {maximum: 100}
     )
+
+    def full()
+        return [street, barangay, city, province, region].join(", ")
+    end
 end
