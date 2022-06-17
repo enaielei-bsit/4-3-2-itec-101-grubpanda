@@ -20,7 +20,7 @@ class PurchasesController < ApplicationController
 
         begin
             items = pp[:orders].split(",").map() {|i| i.split("-")}.map() do |i|
-                p = Purchase.find_by(user_id: @signed_in.id, menu_id: i.first)
+                p = @purchases.find_by(user_id: @signed_in.id, menu_id: i.first)
                 if !p
                     p = Purchase.new(
                         user_id: @signed_in.id,
@@ -87,7 +87,7 @@ class PurchasesController < ApplicationController
 
     def update()
         orders = get_params()[:orders].split(",").map() do |o|
-            Purchase.find_by(id: o)
+            @purchases.find_by(id: o)
         end
         orders = orders.compact
 
@@ -127,7 +127,7 @@ class PurchasesController < ApplicationController
                 Utils.add_messages(
                     flash,
                     "Successful Order",
-                    "Your purchases has been ordered.",
+                    "Your purchases have been ordered",
                     "positive",
                 )
                 redirect_to(edit_cart_url())

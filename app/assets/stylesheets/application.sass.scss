@@ -64,3 +64,11 @@ footer {
     overflow-y: scroll;
     padding-right: 1em;
 }
+
+img.mini.rounded.image {
+    display: none !important;
+}
+
+img.mini.rounded.image + * {
+    padding-left: 0 !important;
+}

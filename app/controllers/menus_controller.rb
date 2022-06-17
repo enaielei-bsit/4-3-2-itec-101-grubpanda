@@ -1,10 +1,12 @@
 class MenusController < ApplicationController
     before_action() do |controller|
-        @products = Product.all
         action = controller.action_name
         if ["new", "create", "destroy"].include?(action) && !@signed_in
             redirect_to(new_session_url())
         end
+
+        @products = Product.all
+        @menus = Menu.page(params[:page] || 1).per(params[:count] || 10)
     end
     
     def show()

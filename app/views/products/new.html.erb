@@ -60,10 +60,10 @@
                     <a href="#" class="ui tiny compact icon button" title="Edit selected">
                         <i class="edit icon"></i>
                     </a>
+                    <a href="#" class="ui tiny compact icon button" title="Delete selected">
+                        <i class="trash alternate icon"></i>
+                    </a>
                 <% end %>
-                <a href="#" class="ui tiny compact icon button" title="Delete selected">
-                    <i class="trash alternate icon"></i>
-                </a>
             </th>
         </tr>
         <tr>
@@ -97,6 +97,9 @@
                 <td><%= p.serving_size %></td>
                 <td><%= p.description %></td>
             </tr>
+        <% end %>
+        <% if @products.length == 0 %>
+            <tr><td colspan="4" class="center aligned">No entry</td></tr>
         <% end %>
     </tbody>
     <% if @products.total_pages > 1 %>

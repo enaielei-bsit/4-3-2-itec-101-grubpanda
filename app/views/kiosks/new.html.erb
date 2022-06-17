@@ -124,10 +124,10 @@
                         <a href="#" class="ui tiny compact icon button" title="Edit selected">
                             <i class="edit icon"></i>
                         </a>
+                        <a href="#" class="ui tiny compact icon button" title="Delete selected">
+                            <i class="trash alternate icon"></i>
+                        </a>
                     <% end %>
-                    <a href="#" class="ui tiny compact icon button" title="Delete selected">
-                        <i class="trash alternate icon"></i>
-                    </a>
                 </th>
             </tr>
         <% end %>
@@ -163,9 +163,12 @@
                         </div>
                     </h6>
                 </td>
-                <td>...</td>
-                <td>...</td>
+                <td><%= k.address.city + ", " + k.address.province %></td>
+                <td><%= "" %></td>
             </tr>
+        <% end %>
+        <% if @kiosks.length == 0 %>
+            <tr><td colspan="<%= @client ? 4 : 3 %>" class="center aligned">No entry</td></tr>
         <% end %>
     </tbody>
     <% if @kiosks.total_pages > 1 %>

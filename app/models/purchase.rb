@@ -7,7 +7,7 @@ class Purchase < ApplicationRecord
         :user,
         presence: true,
         uniqueness: {
-            scope: :menu,
+            scope: [:menu, :order_id],
             message: "with this Menu as purchase already exists"
         }
     )

@@ -96,7 +96,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_073628) do
     t.datetime "updated_at", null: false
     t.index ["menu_id"], name: "index_purchases_on_menu_id"
     t.index ["order_id"], name: "index_purchases_on_order_id"
-    t.index ["user_id", "menu_id"], name: "index_purchases_on_user_id_and_menu_id", unique: true
+    t.index ["user_id", "menu_id", "order_id"], name: "index_purchases_on_user_id_and_menu_id_and_order_id", unique: true
     t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 

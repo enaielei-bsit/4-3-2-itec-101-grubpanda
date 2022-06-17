@@ -7,7 +7,7 @@ class CreatePurchases < ActiveRecord::Migration[7.0]
       t.integer(:price, default: -> {0})
       t.integer :quantity
 
-      t.index([:user_id, :menu_id], unique: true)
+      t.index([:user_id, :menu_id, :order_id], unique: true)
 
       t.timestamps
     end

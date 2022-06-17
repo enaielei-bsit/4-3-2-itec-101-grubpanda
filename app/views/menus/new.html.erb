@@ -129,10 +129,10 @@
                     <a href="#" class="ui tiny compact icon button" title="Edit selected">
                         <i class="edit icon"></i>
                     </a>
+                    <a href="#" class="ui tiny compact icon button" title="Delete selected">
+                        <i class="trash alternate icon"></i>
+                    </a>
                 <% end %>
-                <a href="#" class="ui tiny compact icon button" title="Delete selected">
-                    <i class="trash alternate icon"></i>
-                </a>
             </th>
         </tr>
         <tr>
@@ -147,7 +147,7 @@
         </tr>
     </thead>
     <tbody>
-        <% for i in 1..10 %>
+        <% for m in @menus %>
             <tr>
                 <td class="collapsing">
                     <div class="ui fitted checkbox">
@@ -158,21 +158,27 @@
                     <h6 class="ui image header">
                         <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
                         <div class="content">
-                            <%= link_to("Menu #{i}", "#") %>
+                            <%= link_to(m.name, "#") %>
                         </div>
                         </div>
                     </h6>
                 </td>
-                <td>...</td>
-                <td>...</td>
+                <td><%= raw m.items.map() {|i|
+                        "#{i.product.name} (#{i.quantity})"}.join(", ") %></td>
+                <td>&#x20B1;<%= number_with_precision(m.price, precision: 2) %></td>
             </tr>
         <% end %>
+        <% if @menus.length == 0 %>
+            <tr><td colspan="<%= @client ? 4 : 3 %>" class="center aligned">No entry</td></tr>
+        <% end %>
     </tbody>
-    <tfoot>
-        <tr>
-            <th colspan="4" class="center aligned">
-                <%= render("partials/pagination", page: 1, pages: 5, size: "mini") %>
-            </th>
-        </tr>
-    </tfoot>
+    <% if @menus.total_pages > 1 %>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="center aligned">
+                    <%= render("partials/pagination", page: @menus.current_page, pages: @menus.total_pages, count: @menus.size, size: "mini") %>
+                </th>
+            </tr>
+        </tfoot>
+    <% end %>
 </table>
