@@ -42,4 +42,10 @@ class User < ApplicationRecord
         confirmation: true,
         length: {minimum: 6}
     )
+
+    def full_name()
+        name = [family_name, given_name].join(", ")
+        name += middle_name ? " #{middle_name}" : ""
+        return name
+    end
 end

@@ -1,6 +1,6 @@
 class Purchase < ApplicationRecord
-    belongs_to(:user)
-    belongs_to(:menu)
+    belongs_to(:user, foreign_key: true)
+    belongs_to(:menu, foreign_key: true)
     belongs_to(:order, optional: true)
 
     validates(
@@ -33,5 +33,9 @@ class Purchase < ApplicationRecord
 
     def final_total()
         return price * quantity
+    end
+    
+    def kiosks()
+        return Purchase.select("kiosks.name").joins("left join menus on purchases.menu_id = menus.id").joins("left join kiosks on menus.kiosk_id = kiosks.id").order("kiosks.name asc").map() {|r| r.name}
     end
 end

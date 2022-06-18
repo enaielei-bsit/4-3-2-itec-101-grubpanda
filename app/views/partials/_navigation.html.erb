@@ -37,6 +37,13 @@
             data: nil
         },
         {
+            url: @signed_in && @customer ? index_order_path() : nil,
+            active: controller.on_page("orders", "index", "show"),
+            text: "Orders",
+            icon: "green box open",
+            data: nil
+        },
+        {
             url: @signed_in ? destroy_session_path() : nil,
             active: controller.on_page("sessions", "destroy"),
             text: "Sign Out",

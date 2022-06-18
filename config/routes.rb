@@ -26,6 +26,10 @@ Rails.application.routes.draw do
   get("/cart", to: "purchases#edit", as: :edit_cart)
   patch("/cart", to: "purchases#update", as: :update_cart)
   delete("/cart", to: "purchases#destroy", as: :destroy_cart)
+  
+  # Orders
+  get("/orders", to: "orders#index", as: :index_order)
+  get("/orders/:id", to: "orders#show", as: :show_order)
 
   # Products
   get("/foods-and-beverages", to: "products#new", as: :new_product)

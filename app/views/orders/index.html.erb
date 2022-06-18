@@ -1,0 +1,22 @@
+<% provide(:title, "Orders") %>
+<%
+    subtitle = "Manage your orders."
+%>
+<%= render("partials/page_header", title: "Orders", subtitle: subtitle) %>
+<div class="ui divider"></div>
+<div class="ui two cards">
+    <% for o in @orders %>
+        <div class="card">
+            <div class="content">
+                <%= link_to(o.identifier, show_order_path(o.id), class: "header") %>
+                <div class="meta">
+                    <span class="right floated time" title="<%= o.created_at.to_formatted_s(:long) %>"><%= time_ago_in_words(o.created_at) %> ago</span>
+                    <span class="category">&#x20B1;<%= number_with_precision(o.price, precision: 2) %></span>
+                </div>
+                <div class="description">
+                    Elliot Fu is a film-maker from New York.
+                </div>
+            </div>
+        </div>
+    <% end %>
+</div>
