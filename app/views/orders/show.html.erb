@@ -31,8 +31,8 @@
     </div>
     <div class="ui list">
         <div class="item">
-            <div class="header">Kiosk</div>
-            <%= @order.kiosks %>
+            <div class="header">Merchants</div>
+            <%= @order.kiosks.join(", ") %>
         </div>
     </div>
 </div>

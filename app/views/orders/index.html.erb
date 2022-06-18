@@ -10,12 +10,17 @@
             <div class="content">
                 <%= link_to(o.identifier, show_order_path(o.id), class: "header") %>
                 <div class="meta">
-                    <span class="right floated time" title="<%= o.created_at.to_formatted_s(:long) %>"><%= time_ago_in_words(o.created_at) %> ago</span>
-                    <span class="category">&#x20B1;<%= number_with_precision(o.price, precision: 2) %></span>
+                    <span class="time" title="<%= o.created_at.to_formatted_s(:long) %>"><%= time_ago_in_words(o.created_at) %> ago</span>
                 </div>
                 <div class="description">
-                    Elliot Fu is a film-maker from New York.
+                    <%= (o.purchases.map() {|p| p.menu.name}).join(", ") %>
                 </div>
+            </div>
+            <div class="extra content">
+                <a href="<%= show_order_path(o.id) %>">
+                    <i class="ruble sign icon"></i>
+                    &#x20B1;<%= number_with_precision(o.price, precision: 2) %>
+                </a>
             </div>
         </div>
     <% end %>

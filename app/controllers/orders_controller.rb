@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
         end
         
         @order = Order.new()
-        @orders = Order.where(user_id: @signed_in.id).page(params[:page] || 1).per(params[:count] || 10)
+        @orders = Order.where(user_id: @signed_in&.id || -1).page(params[:page] || 1).per(params[:count] || 10)
     end
 
     def show()
